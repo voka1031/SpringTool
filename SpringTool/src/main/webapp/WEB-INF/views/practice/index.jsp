@@ -107,11 +107,11 @@
 					//var url = contextPath + '/practice/getByGender';
 					
 					//with restController
-					var url = contextPath + '/rest/responseJson';
+					var url = contextPath + '/rest/getByGender';
 					
 					$.post(url, {gender : $genderSelect.val()} ,function(data){
 						$nameSelect.empty();
-						$nameSelect.append('<option value="0">----</option>');	
+						$nameSelect.append('<option value="0">~~~~</option>');	
 						$.each(data, function(index, genderObj){
 							var option = $('<option></option>').attr("value",genderObj.id).text(genderObj.name);
 							$nameSelect.append(option);						

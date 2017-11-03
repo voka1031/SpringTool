@@ -12,23 +12,23 @@ import com.voka.service.GetService;
  * @author WeiNung RestController 會依據輸入的url取出值(可以是物件、list..)後，再以JSON形式輸出.
  */
 @RestController
-@RequestMapping(value = "/rest")
+@RequestMapping("rest")
 public class RestDemoController {
 
 	@Autowired
 	private GetService getSvc;
 
-	@PostMapping("/responseJson")
-	public String restResponse(@RequestParam String gender) {
-		return getSvc.getByGenderJson(gender);
+	@PostMapping("getByGender")
+	public List<PracticeVO> getByGender(@RequestParam String gender) {
+		return gender.equals("1") ? getSvc.getAll() : getSvc.getByGender(gender);
 	}
 
-	@GetMapping("/typing/{id}")
+	@GetMapping("typing/{id}")
 	public PracticeVO restTypingResult(@PathVariable String id) {
 		return getSvc.getOnePractice(new Integer(id));
 	}
 
-	@GetMapping("/typing/all")
+	@GetMapping("typing/all")
 	public List<PracticeVO> restTypingResultAll() {
 		return getSvc.getAll();
 	}
