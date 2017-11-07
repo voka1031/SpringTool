@@ -4,9 +4,11 @@ import java.util.*;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+
 import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.*;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -62,35 +64,6 @@ public class PracticeDAO implements PracticeDAO_interface {
 
 		List<PracticeVO> list = query.getResultList();
 		return list;
-	}
-
-	@Override
-	public void insert(PracticeVO pVO) {
-		try {
-			getSession().saveOrUpdate(pVO);
-		} catch (RuntimeException ex) {
-			throw ex;
-		}
-	}
-
-	@Override
-	public void update(PracticeVO pVO) {
-		try {
-			getSession().saveOrUpdate(pVO);
-		} catch (RuntimeException ex) {
-			throw ex;
-		}
-	}
-
-	@Override
-	public void delete(Integer id) {
-		Session session = getSession();
-		try {
-			PracticeVO pVO = session.get(PracticeVO.class, id);
-			session.delete(pVO);
-		} catch (RuntimeException ex) {
-			throw ex;
-		}
 	}
 
 	@Override
@@ -168,6 +141,38 @@ public class PracticeDAO implements PracticeDAO_interface {
 			throw ex;
 		}
 		return listSize;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.MANDATORY)
+	public void insert(PracticeVO pVO) {
+		try {
+			getSession().saveOrUpdate(pVO);
+		} catch (RuntimeException ex) {
+			throw ex;
+		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.MANDATORY)
+	public void update(PracticeVO pVO) {
+		try {
+			getSession().saveOrUpdate(pVO);
+		} catch (RuntimeException ex) {
+			throw ex;
+		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.MANDATORY)
+	public void delete(Integer id) {
+		Session session = getSession();
+		try {
+			PracticeVO pVO = session.get(PracticeVO.class, id);
+			getSession().delete(pVO);
+		} catch (RuntimeException ex) {
+			throw ex;
+		}
 	}
 
 }
