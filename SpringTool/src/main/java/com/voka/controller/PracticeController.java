@@ -23,7 +23,7 @@ import com.voka.model.*;
 import com.voka.service.*;
 
 @Controller
-@RequestMapping("/practice")
+@RequestMapping("practice")
 @PropertySource("classpath:apConfig.properties")
 public class PracticeController {
 
@@ -36,7 +36,7 @@ public class PracticeController {
 	@Autowired
 	private Environment env;
 
-	@RequestMapping(value = "uploadPage", method = RequestMethod.GET)
+	@GetMapping("uploadPage")
 	public String view(HttpSession session, Model model) throws Exception {
 		return "fileUpload";
 	}
