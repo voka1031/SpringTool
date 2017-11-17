@@ -13,15 +13,15 @@
 	<form action="insert" method="POST" id="idForm" modelAttribute="practiceVO">
 			<p>
 				<label for="male">
-					<input type="radio" name="sex" id="male" value="M" required/>男
+					<input type="radio" name="sex" id="male" value="M"/>男
 				</label>
 				<label for="female">
 					<input type="radio" name="sex" id="female" value="F"/>女
 				</label>
 				<label for="sex" class="error"></label>
 			</p>
-			<p><label for ="name">Name</label><input type="text" name="name" id="name" size="20" required></p>
-			<p><label for ="tel">Tel</label><input type="text" name="tel" id="tel" size="20" required></p>
+			<p><label for ="name">Name</label><input type="text" name="name" id="name" size="20"></p>
+			<p><label for ="tel">Tel</label><input type="text" name="tel" id="tel" size="20"></p>
 			<p><input type="submit" value="送出新增"></p>
 	</form>
 	<ul>
@@ -36,6 +36,7 @@
 		$().ready(function() {
 			$("#idForm").validate({
 				rules : {
+					sex : "required",
 					name : {
 						required : true,
 						minlength : 2
@@ -46,6 +47,7 @@
 					}
 				},
 				messages : {
+					sex : "Please select your gender",
 					name : {
 						required : "Please enter your name",
 						minlength : "the min name length is 2"
