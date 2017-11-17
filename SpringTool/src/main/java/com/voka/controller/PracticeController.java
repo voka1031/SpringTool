@@ -125,6 +125,12 @@ public class PracticeController {
 		model.addAttribute("practiceVO", new PracticeVO());
 		return "add";
 	}
+	
+	@GetMapping("addPractice_jQueryValidate")
+	public String addPractice_JQueryValidate(ModelMap model) {
+		model.addAttribute("practiceVO", new PracticeVO());
+		return "add_jQueryValidate";
+	}
 
 	@PostMapping("insert")
 	public String insert(@Valid PracticeVO practiceVO, BindingResult result, ModelMap model) {

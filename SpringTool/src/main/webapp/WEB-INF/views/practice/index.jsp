@@ -18,6 +18,7 @@
 		<a href='<%=request.getContextPath()%>/practice/listAllPaging/'>表列所有成員</a>
 	    <a href='<%=request.getContextPath()%>/practice/listAll_dataTable/'>表列所有成員_dataTable</a>
 		<a href='<%=request.getContextPath()%>/practice/addPractice'>加入新成員</a>
+		<a href='<%=request.getContextPath()%>/practice/addPractice_jQueryValidate'>加入新成員_jQueryValidate</a>
 		<a href='<%=request.getContextPath()%>/practice/test'>功能測試頁</a>
 		<a href='<%=request.getContextPath()%>/practice/uploadPage'>上傳測試頁</a>
 		<a href='#' id="outsideSubmit">表單外確認鍵</a>
