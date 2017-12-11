@@ -13,8 +13,7 @@
 <link rel="stylesheet" href="<spring:theme code='stylesheet'/>" type="text/css" />
 <body>
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
-		<h3>首頁</h3>
-		
+		<h3>首頁<img id="captchaImg" src="<c:url value='/practice/jcaptcha.jpg'/>" alt="圖形驗證碼" /></h3>
 		<a href='<%=request.getContextPath()%>/practice/listAllPaging/'>表列所有成員</a>
 	    <a href='<%=request.getContextPath()%>/practice/listAll_dataTable/'>表列所有成員_dataTable</a>
 		<a href='<%=request.getContextPath()%>/practice/addPractice'>加入新成員</a>

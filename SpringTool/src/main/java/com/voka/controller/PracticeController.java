@@ -11,9 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.validation.BindingResult;
 import org.springframework.ui.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -35,6 +40,27 @@ public class PracticeController {
 
 	@Autowired
 	private Environment env;
+	
+	/**
+	 * 亂數驗證碼
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @param modelMap
+	 * @throws IOException
+	 */
+	@GetMapping("jcaptcha.jpg")
+	public void getJcaptcha(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap modelMap) throws IOException {
+		//設置頁面不緩存
+		response.setHeader("Pragma", "No-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		
+		String randomStr = Integer.valueOf(new Random().nextInt(89999) + 10000).toString();
+		session.setAttribute("randomStr", randomStr);
+		// 輸出圖像到頁面
+		ImageIO.write(getSvc.getCaptcha(randomStr), "JPEG", response.getOutputStream()); 
+	}
 
 	@GetMapping("uploadPage")
 	public String view(HttpSession session, Model model) throws Exception {

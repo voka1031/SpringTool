@@ -26,7 +26,7 @@ public class SchedulerConfig {
 	public CronTriggerFactoryBean getTriggers(){
 		CronTriggerFactoryBean bean = new CronTriggerFactoryBean();
 		bean.setJobDetail(getJobDetail().getObject());
-		bean.setCronExpression("0 1/30 * * * ?");
+		bean.setCronExpression("0 1/50 * * * ?");
 		return bean;
 	}
 	
@@ -43,7 +43,7 @@ public class SchedulerConfig {
 	public CronTriggerFactoryBean getTriggers_2(){
 		CronTriggerFactoryBean bean = new CronTriggerFactoryBean();
 		bean.setJobDetail(getJobDetail_2().getObject());
-		bean.setCronExpression("0 0/10 * * * ?");
+		bean.setCronExpression("0 0/50 * * * ?");
 		return bean;
 	}
 	

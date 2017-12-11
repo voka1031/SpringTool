@@ -1,5 +1,9 @@
 package com.voka.service;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import org.apache.poi.ss.usermodel.Row;
@@ -91,5 +95,47 @@ public class GetService {
 	@Transactional(readOnly = true)
 	public Integer getListSize() {
 		return dao.getListSize();
+	}
+
+	@CatchForAOP
+	@Transactional(readOnly = true)
+	public BufferedImage getCaptcha(String randomStr) {
+		Random random = new Random();
+
+		int fontSize = 20;
+		int imgWidth = randomStr.length() * (fontSize);
+		int imgHeight = 30;
+
+		BufferedImage image = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);// 創建圖像
+		Graphics graphic = image.getGraphics(); // 獲取圖形上下文
+
+		// 設定背景色
+		graphic.setColor(new Color(random.nextInt(155) + 100, random.nextInt(155) + 100, random.nextInt(155) + 100));
+		graphic.fillRect(0, 0, imgWidth, imgHeight);
+
+		// 設定字體及大小
+		graphic.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
+
+		// 隨機產生155條干擾線，使圖像中的認證碼不易被其它程序探測到
+		for (int i = 0; i < 155; i++) {
+			graphic.setColor(
+					new Color(random.nextInt(155) + 100, random.nextInt(155) + 100, random.nextInt(155) + 100));
+			int x = random.nextInt(imgWidth);
+			int y = random.nextInt(imgHeight);
+			int xl = random.nextInt(12);
+			int yl = random.nextInt(12);
+			graphic.drawLine(x, y, x + xl, y + yl);
+		}
+
+		// 將認證碼顯示到圖像中
+		for (int i = 0; i < randomStr.length(); i++) {
+			graphic.setColor(new Color(random.nextInt(123), random.nextInt(123), random.nextInt(123)));
+			graphic.drawString(randomStr.substring(i , i + 1), 
+					fontSize * i + random.nextInt(fontSize / 2),
+					fontSize - 3 + random.nextInt(fontSize / 2));
+		}
+
+		graphic.dispose();
+		return image;
 	}
 }

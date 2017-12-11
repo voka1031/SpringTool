@@ -9,8 +9,8 @@
 <title>新增</title>
 </head>
 <body>
-	<h3>新增</h3>
-	<form action="insert" method="POST" id="idForm" modelAttribute="practiceVO">
+	<h3>新增 with jQuery Validate</h3>
+	<form action="insert" method="POST" id="idForm">
 			<p>
 				<label for="male">
 					<input type="radio" name="sex" id="male" value="M"/>男
@@ -28,8 +28,7 @@
 		<li><a href='<%=request.getContextPath()%>/practice/'>回首頁</a><br>
 		<br></li>
 	</ul>
-
-
+	
 	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>
 	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery.validate.min.js"></script>
 	<script>
