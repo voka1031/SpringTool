@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.voka.model.PracticeVO;
-import com.voka.service.GetService;
+import com.project.model.PracticeVO;
+import com.project.service.GetService;
 
 /**
  * @author WeiNung RestController 會依據輸入的url取出值(可以是物件、list..)後，再以JSON形式輸出.

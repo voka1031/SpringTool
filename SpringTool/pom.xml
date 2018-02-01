@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.voka</groupId>
+	<groupId>com.project</groupId>
 	<artifactId>SpringTool</artifactId>
 	<name>SpringTool</name>
 	<packaging>war</packaging>
@@ -319,11 +319,6 @@
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>2.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.entie</groupId>
-			<artifactId>security</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 		<!-- poi -->
 		<dependency>
