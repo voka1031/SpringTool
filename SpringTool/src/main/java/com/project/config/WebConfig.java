@@ -15,6 +15,7 @@ import com.project.handler.*;
 @EnableWebMvc
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "com.project")
+@PropertySource("classpath:apConfig.properties")
 public class WebConfig extends WebMvcConfigurerAdapter {
  
 	@Bean

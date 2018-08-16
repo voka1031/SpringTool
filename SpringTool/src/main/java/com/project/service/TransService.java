@@ -34,35 +34,19 @@ public class TransService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
+	public void transRequriedTest1() {
+		addPractice1();
+		addPracticeREQUIRED();
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void addPractice1() {
 		PracticeVO vo = new PracticeVO();
 		vo.setName("一一一");
 		vo.setSex("F");
 		vo.setTel("0912111111");
 		dao.insert(vo);
-		addPracticeREQUIRED();
-	}
-	
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void transRequriedTest1() {
-		addPractice1();
-		addPracticeREQUIRED();
-	}
-	
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void transRequriedTest2() {
-		addPractice2();
-		addPracticeREQUIRES_NEW();
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void addPractice2() {
-		PracticeVO vo = new PracticeVO();
-		vo.setName("二二二");
-		vo.setSex("M");
-		vo.setTel("0221222222");
-		dao.insert(vo);
-		//addPracticeREQUIRES_NEW();
+		// addPracticeREQUIRED();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -72,6 +56,22 @@ public class TransService {
 		vo.setSex("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
 		vo.setTel("0912333333");
 		dao.insert(vo);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void transRequriedTest2() {
+		addPractice2();
+		//addPracticeREQUIRES_NEW();
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void addPractice2() {
+		PracticeVO vo = new PracticeVO();
+		vo.setName("二二二");
+		vo.setSex("M");
+		vo.setTel("0221222222");
+		dao.insert(vo);
+		// addPracticeREQUIRES_NEW();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
