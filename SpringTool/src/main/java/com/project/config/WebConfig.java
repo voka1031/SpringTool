@@ -38,12 +38,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
 		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
 		registry.addResourceHandler("/images/**").addResourceLocations("/images/");
-		registry.addResourceHandler("/project/themes/**").addResourceLocations("/themes/");
+		registry.addResourceHandler("/practice/themes/**").addResourceLocations("/themes/");
 	}
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new PracticeInterceptor()).addPathPatterns("/project/**");
+		registry.addInterceptor(new PracticeInterceptor()).addPathPatterns("/**");
 		
 		//theme practice
 		registry.addInterceptor(themeChangeInterceptor());

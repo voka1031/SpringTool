@@ -38,7 +38,6 @@ public class SpringRootInitializer implements WebApplicationInitializer {
 		container.setInitParameter("log4jRefreshInterval", "90000");
 		container.setInitParameter("log4jExposeWebAppRoot", "false");
 
-		Log4jConfigListener log4jListener = new Log4jConfigListener();
-		container.addListener(log4jListener);
+		container.addListener(new Log4jConfigListener());
 	}
 }

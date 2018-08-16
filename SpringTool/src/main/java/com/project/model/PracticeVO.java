@@ -42,7 +42,7 @@ public class PracticeVO implements java.io.Serializable {
 	}
 
 	@Column(name = "sex")
-	@NotEmpty(message = "性別: 請勿空白(VO validation)")
+//	@NotEmpty(message = "性別: 請勿空白(VO validation)")
 	public String getSex() {
 		return sex;
 	}
