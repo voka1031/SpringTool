@@ -43,23 +43,6 @@ public class MainController {
 	@Autowired
 	private Environment env;
 
-	@GetMapping("test")
-	public String entranceOfTestPage(ModelMap model) throws IOException {
-		return "test";
-	}
-
-	@GetMapping("tran1")
-	public String testTran1(ModelMap model) throws IOException {
-		transSvc.transRequriedTest1();
-		return PageManager.MAIN_PAGE;
-	}
-
-	@GetMapping("tran2")
-	public String testTran2(ModelMap model) throws IOException {
-		transSvc.transRequriedTest2();
-		return PageManager.MAIN_PAGE;
-	}
-
 	@RequestMapping(method = RequestMethod.POST, value = "getOne_For_Display_ajax")
 	public String getOne_For_Display_ajax(@RequestParam String id, ModelMap model) {
 		model.addAttribute("practiceVO", getSvc.getOnePractice(new Integer(id)));
@@ -67,8 +50,7 @@ public class MainController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "getOne_For_Display")
-	public String getOne_For_Display(@Valid @ModelAttribute IdWrapper idWrapper,
-			BindingResult result, ModelMap model) {
+	public String getOne_For_Display(@Valid @ModelAttribute IdWrapper idWrapper, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
 			model.addAttribute("message", result.getFieldError().getDefaultMessage());
@@ -118,13 +100,13 @@ public class MainController {
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("id") String id, ModelMap model) {
 		model.addAttribute("practiceVO", getSvc.getOnePractice(new Integer(id)));
-		return "update";
+		return PageManager.UPDATE;
 	}
 
 	@GetMapping("addPractice")
 	public String addPractice(ModelMap model) {
 		model.addAttribute("practiceVO", new PracticeVO());
-		return "add";
+		return PageManager.ADD;
 	}
 
 	@GetMapping("addPractice_jQueryValidate")
@@ -137,7 +119,7 @@ public class MainController {
 	public String insert(@Valid PracticeVO practiceVO, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
-			return "add";
+			return PageManager.ADD;
 
 		transSvc.addPractice(practiceVO);
 		return listAllPaging(model);
@@ -147,7 +129,7 @@ public class MainController {
 	public String update(@Valid PracticeVO practiceVO, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
-			return "update";
+			return PageManager.UPDATE;
 
 		transSvc.updatePractice(practiceVO);
 		return listAllPaging(model);
@@ -157,5 +139,22 @@ public class MainController {
 	public String delete(@RequestParam("id") String id, ModelMap model) {
 		transSvc.deletePractice(new Integer(id));
 		return listAllPaging(model);
+	}
+
+	@GetMapping("test")
+	public String entranceOfTestPage(ModelMap model) throws IOException {
+		return "test";
+	}
+
+	@GetMapping("tran1")
+	public String testTran1(ModelMap model) throws IOException {
+		transSvc.transRequriedTest1();
+		return PageManager.MAIN_PAGE;
+	}
+
+	@GetMapping("tran2")
+	public String testTran2(ModelMap model) throws IOException {
+		transSvc.transRequriedTest2();
+		return PageManager.MAIN_PAGE;
 	}
 }
