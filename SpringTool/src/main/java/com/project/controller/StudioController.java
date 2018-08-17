@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.project.constant.Constants;
-import com.project.constant.PageManager;
+import com.project.constant.PageConsts;
 import com.project.service.GetService;
 
 @Controller
@@ -44,7 +44,7 @@ public class StudioController {
 	@GetMapping
 	public String entry(ModelMap model) throws IOException {
 		System.out.println(CONTENT);
-		return PageManager.MAIN_PAGE;
+		return PageConsts.MAIN_PAGE;
 	}
 
 	@GetMapping("uploadPage")
@@ -105,7 +105,6 @@ public class StudioController {
 		System.out.println("in fileUpload, getContentType = " + multipartFile.getContentType());
 		System.out.println("in fileUpload, getName = " + multipartFile.getName());
 		System.out.println("in fileUpload, getOriginalFilename = " + multipartFile.getOriginalFilename());
-		System.out.println("in fileUpload, getSize = " + multipartFile.getSize() + " bytes");
 		System.out.println("in fileUpload, getSize = " + multipartFile.getSize() + " bytes");
 
 		try {

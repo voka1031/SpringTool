@@ -15,7 +15,6 @@ public class RestApiController {
 	
 	@GetMapping("test")
 	public TestResponse getRestTest() {
-		
 		return new TestResponse(new Date());
 	}
 	

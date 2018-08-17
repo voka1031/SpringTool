@@ -23,15 +23,15 @@ import com.project.model.*;
 public class GetService {
 
 	@Autowired
-	private PracticeDAO_interface dao;
+	private CustomerInterface dao;
 
 	@Transactional(readOnly = true)
 	public String getByGenderJson(String gender) {
 		JsonArray array = new JsonArray();
 
-		List<PracticeVO> list = gender.equals("1") ? getAll() : getByGender(gender);
+		List<Customer> list = gender.equals("1") ? getAll() : getByGender(gender);
 
-		for (PracticeVO pVO : list) {
+		for (Customer pVO : list) {
 			JsonObject genderObj = new JsonObject();
 			genderObj.addProperty("name", pVO.getName());
 			genderObj.addProperty("id", pVO.getId());
@@ -42,7 +42,7 @@ public class GetService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<PracticeVO> getByGender(String gender) {
+	public List<Customer> getByGender(String gender) {
 		return dao.getByGender(gender);
 	}
 
@@ -70,24 +70,24 @@ public class GetService {
 
 	@CatchForAOP
 	@Transactional(readOnly = true)
-	public PracticeVO getOnePractice(Integer id) {
+	public Customer getOnePractice(Integer id) {
 		return dao.findByPrimaryKey(id);
 	}
 
 	@CatchForAOP
 	@Transactional(readOnly = true)
-	public List<PracticeVO> getAll() {
+	public List<Customer> getAll() {
 		return dao.getAll();
 	}
 
 	@CatchForAOP
 	@Transactional(readOnly = true)
-	public List<PracticeVO> getDemoList() {
+	public List<Customer> getDemoList() {
 		return dao.getLambdaList();
 	}
 
 	@Transactional(readOnly = true)
-	public List<PracticeVO> getPaging(Integer nthPage, Integer maxPerPage) {
+	public List<Customer> getPaging(Integer nthPage, Integer maxPerPage) {
 		return dao.getPaging(nthPage, maxPerPage);
 	}
 

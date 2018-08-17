@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.project.constant.PageManager;
+import com.project.constant.PageConsts;
 import com.project.model.IdWrapper;
-import com.project.model.PracticeVO;
+import com.project.model.Customer;
 import com.project.service.GetService;
 import com.project.service.TransService;
 
 @Controller
-@RequestMapping("/practice")
+@RequestMapping("practice")
 public class MainController {
 
 	@SuppressWarnings("unused")
@@ -56,7 +56,7 @@ public class MainController {
 			model.addAttribute("message", result.getFieldError().getDefaultMessage());
 
 		else {
-			PracticeVO pVO = getSvc.getOnePractice(new Integer(idWrapper.getId()));
+			Customer pVO = getSvc.getOnePractice(new Integer(idWrapper.getId()));
 
 			if (pVO == null)
 				model.addAttribute("message", "查無資料");
@@ -64,7 +64,7 @@ public class MainController {
 				model.addAttribute("practiceVO", pVO);
 
 		}
-		return PageManager.MAIN_PAGE;
+		return PageConsts.MAIN_PAGE;
 	}
 
 	@GetMapping("pagingTable/{nth}")
@@ -81,7 +81,7 @@ public class MainController {
 		Integer listSize = getSvc.getListSize();
 		Integer maxPage = (listSize % numberPerPage == 0) ? listSize / numberPerPage : (listSize / numberPerPage) + 1;
 
-		List<PracticeVO> LastPagelist = getSvc.getPaging((maxPage - 1), numberPerPage);
+		List<Customer> LastPagelist = getSvc.getPaging((maxPage - 1), numberPerPage);
 		Integer lackNumber = numberPerPage - LastPagelist.size();
 
 		model.addAttribute("maxPage", maxPage);
@@ -100,36 +100,36 @@ public class MainController {
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("id") String id, ModelMap model) {
 		model.addAttribute("practiceVO", getSvc.getOnePractice(new Integer(id)));
-		return PageManager.UPDATE;
+		return PageConsts.UPDATE_PAGE;
 	}
 
 	@GetMapping("addPractice")
 	public String addPractice(ModelMap model) {
-		model.addAttribute("practiceVO", new PracticeVO());
-		return PageManager.ADD;
+		model.addAttribute("practiceVO", new Customer());
+		return PageConsts.INSERT_PAGE;
 	}
 
 	@GetMapping("addPractice_jQueryValidate")
 	public String addPractice_JQueryValidate(ModelMap model) {
-		model.addAttribute("practiceVO", new PracticeVO());
+		model.addAttribute("practiceVO", new Customer());
 		return "add_jQueryValidate";
 	}
 
 	@PostMapping("insert")
-	public String insert(@Valid PracticeVO practiceVO, BindingResult result, ModelMap model) {
+	public String insert(@Valid Customer practiceVO, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
-			return PageManager.ADD;
+			return PageConsts.INSERT_PAGE;
 
 		transSvc.addPractice(practiceVO);
 		return listAllPaging(model);
 	}
 
 	@PostMapping("update")
-	public String update(@Valid PracticeVO practiceVO, BindingResult result, ModelMap model) {
+	public String update(@Valid Customer practiceVO, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
-			return PageManager.UPDATE;
+			return PageConsts.UPDATE_PAGE;
 
 		transSvc.updatePractice(practiceVO);
 		return listAllPaging(model);
@@ -142,19 +142,7 @@ public class MainController {
 	}
 
 	@GetMapping("test")
-	public String entranceOfTestPage(ModelMap model) throws IOException {
+	public String test(ModelMap model) throws IOException {
 		return "test";
-	}
-
-	@GetMapping("tran1")
-	public String testTran1(ModelMap model) throws IOException {
-		transSvc.transRequriedTest1();
-		return PageManager.MAIN_PAGE;
-	}
-
-	@GetMapping("tran2")
-	public String testTran2(ModelMap model) throws IOException {
-		transSvc.transRequriedTest2();
-		return PageManager.MAIN_PAGE;
 	}
 }
