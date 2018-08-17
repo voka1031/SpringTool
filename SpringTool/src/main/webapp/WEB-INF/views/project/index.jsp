@@ -7,11 +7,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>SpringDemo</title>
+	<title>SpringTool</title>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <link rel="stylesheet" href="<c:out value="${pageContext.request.contextPath}"/>/css/bootstrap-3.3.7.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/<spring:theme code='stylesheet'/>" type="text/css" />
+<link rel="stylesheet" href="<spring:theme code='stylesheet'/>" type="text/css" />
 <body>
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 		<h3>首頁<img src="<c:url value='/practice/jcaptcha.jpg'/>" alt="圖形驗證碼" /></h3>

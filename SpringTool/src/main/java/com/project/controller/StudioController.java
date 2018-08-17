@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -108,7 +109,7 @@ public class StudioController {
 		System.out.println("in fileUpload, getSize = " + multipartFile.getSize() + " bytes");
 
 		try {
-			if (Constants.CONTENT_TYPE_EXCEL_XLSX.equals(multipartFile.getContentType()))
+			if (StringUtils.equals(Constants.CONTENT_TYPE_EXCEL_XLSX, multipartFile.getContentType()))
 				getSvc.excelCheck(multipartFile);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {

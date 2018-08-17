@@ -20,7 +20,7 @@
 		<h3>{{theTime}}</h3>
 		</div>   
 	<!-- theme test  -->	
-		theme test: <a href="?theme=bright">bright</a> | <a href="?theme=dark">dark</a>	
+		theme test: <a href="?theme=bright">bright</a> | <a href="?theme=dark">dark</a> | <a href="?theme=a94442">a94442</a>	
 		<br/><br/><br/>
 	<!-- angularJS test  -->
 	
