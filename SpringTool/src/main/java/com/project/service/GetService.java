@@ -4,10 +4,19 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +26,19 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.project.annotation.CatchForAOP;
-import com.project.model.*;
+import com.project.model.Customer;
+import com.project.model.CustomerInterface;
+import com.project.model.StockDailyData;
+import com.project.util.MyDateUtils;
 
 @Service
 public class GetService {
 
 	@Autowired
-	private CustomerInterface dao;
+	private CustomerInterface customerRepo;
+
+	@Autowired
+	private StockService stockService;
 
 	@Transactional(readOnly = true)
 	public String getByGenderJson(String gender) {
@@ -43,7 +58,7 @@ public class GetService {
 
 	@Transactional(readOnly = true)
 	public List<Customer> getByGender(String gender) {
-		return dao.getByGender(gender);
+		return customerRepo.getByGender(gender);
 	}
 
 	@CatchForAOP
@@ -53,6 +68,7 @@ public class GetService {
 		try {
 			workbook = new XSSFWorkbook(new BufferedInputStream(multipartFile.getInputStream()));
 			XSSFSheet sheet = workbook.getSheetAt(0);
+			System.out.println("sheet" + sheet);
 			Iterator<Row> iterator = sheet.iterator();
 			while (iterator.hasNext()) {
 				Row row = iterator.next();
@@ -71,30 +87,30 @@ public class GetService {
 	@CatchForAOP
 	@Transactional(readOnly = true)
 	public Customer getOnePractice(Integer id) {
-		return dao.findByPrimaryKey(id);
+		return customerRepo.findByPrimaryKey(id);
 	}
 
 	@CatchForAOP
 	@Transactional(readOnly = true)
 	public List<Customer> getAll() {
-		return dao.getAll();
+		return customerRepo.getAll();
 	}
 
 	@CatchForAOP
 	@Transactional(readOnly = true)
 	public List<Customer> getDemoList() {
-		return dao.getLambdaList();
+		return customerRepo.getLambdaList();
 	}
 
 	@Transactional(readOnly = true)
 	public List<Customer> getPaging(Integer nthPage, Integer maxPerPage) {
-		return dao.getPaging(nthPage, maxPerPage);
+		return customerRepo.getPaging(nthPage, maxPerPage);
 	}
 
 	@CatchForAOP
 	@Transactional(readOnly = true)
 	public Integer getListSize() {
-		return dao.getListSize();
+		return customerRepo.getListSize();
 	}
 
 	@CatchForAOP
@@ -130,7 +146,7 @@ public class GetService {
 		// 將認證碼顯示到圖像中
 		for (int i = 0; i < randomStr.length(); i++) {
 			graphic.setColor(new Color(random.nextInt(123), random.nextInt(123), random.nextInt(123)));
-			graphic.drawString(randomStr.substring(i , i + 1), 
+			graphic.drawString(randomStr.substring(i, i + 1),
 					fontSize * i + random.nextInt(fontSize / 2),
 					fontSize - 3 + random.nextInt(fontSize / 2));
 		}
@@ -138,4 +154,37 @@ public class GetService {
 		graphic.dispose();
 		return image;
 	}
+
+	public List<List<Map<Object, Object>>> getStock(String securityCode, String startDate, String endDate) throws ParseException {
+
+		Map<Object, Object> map = null;
+		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
+		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
+
+		List<StockDailyData> dataList = stockService.getStock(securityCode, startDate, endDate);
+
+		for (StockDailyData data : dataList) {
+			
+			Double[] yData;
+
+			try {
+				yData = new Double[] { Double.parseDouble(data.getOpeningPrice()),
+						Double.parseDouble(data.getHighestPrice()),
+						Double.parseDouble(data.getLowestPrice()),
+						Double.parseDouble(data.getClosingPrice()) };
+
+				map = new HashMap<>();
+				map.put("x", MyDateUtils.sdf.parse(data.getId().getTradeDate()).getTime());
+				map.put("y", yData);
+				dataPoints1.add(map);
+
+			} catch (NumberFormatException e) {
+			}
+
+		}
+		list.add(dataPoints1);
+		return list;
+	}
+
+
 }

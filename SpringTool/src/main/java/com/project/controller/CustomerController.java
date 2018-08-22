@@ -1,13 +1,10 @@
 package com.project.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -20,19 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.constant.PageConsts;
-import com.project.model.IdWrapper;
 import com.project.model.Customer;
+import com.project.model.IdWrapper;
 import com.project.service.GetService;
 import com.project.service.TransService;
 
 @Controller
-@RequestMapping("practice")
-public class MainController {
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+@RequestMapping("customer")
+public class CustomerController {
 
 	@Autowired
 	private GetService getSvc;
@@ -43,27 +38,25 @@ public class MainController {
 	@Autowired
 	private Environment env;
 
-	@RequestMapping(method = RequestMethod.POST, value = "getOne_For_Display_ajax")
-	public String getOne_For_Display_ajax(@RequestParam String id, ModelMap model) {
-		model.addAttribute("practiceVO", getSvc.getOnePractice(new Integer(id)));
+	@RequestMapping(method = RequestMethod.POST, value = "getOneForDisplayAJAX")
+	public String getOneForDisplayAJAX(@RequestParam String id, ModelMap model) {
+		model.addAttribute("customer", getSvc.getOnePractice(new Integer(id)));
 		return "getOneAjax";
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "getOne_For_Display")
-	public String getOne_For_Display(@Valid @ModelAttribute IdWrapper idWrapper, BindingResult result, ModelMap model) {
+	@RequestMapping(method = RequestMethod.POST, value = "getOneForDisplay")
+	public String getOneForDisplay(@Valid @ModelAttribute IdWrapper idWrapper, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
 			model.addAttribute("message", result.getFieldError().getDefaultMessage());
 
-		else {
-			Customer pVO = getSvc.getOnePractice(new Integer(idWrapper.getId()));
+		Customer pVO = getSvc.getOnePractice(new Integer(idWrapper.getId()));
 
-			if (pVO == null)
-				model.addAttribute("message", "查無資料");
-			else
-				model.addAttribute("practiceVO", pVO);
+		if (pVO == null)
+			model.addAttribute("message", "查無資料");
+		else
+			model.addAttribute("customer", pVO);
 
-		}
 		return PageConsts.MAIN_PAGE;
 	}
 
@@ -91,47 +84,47 @@ public class MainController {
 		return "listAllPaging";
 	}
 
-	@GetMapping("listAll_dataTable")
+	@GetMapping("listAllDataTable")
 	public String listAll_dataTable(ModelMap model) {
 		model.addAttribute("list", getSvc.getDemoList());
-		return "listAll_dataTable";
+		return "listAllDataTable";
 	}
 
-	@PostMapping("getOne_For_Update")
-	public String getOne_For_Update(@RequestParam("id") String id, ModelMap model) {
-		model.addAttribute("practiceVO", getSvc.getOnePractice(new Integer(id)));
+	@PostMapping("getOneForUpdate")
+	public String getOneForUpdate(@RequestParam("id") String id, ModelMap model) {
+		model.addAttribute("customer", getSvc.getOnePractice(new Integer(id)));
 		return PageConsts.UPDATE_PAGE;
 	}
 
-	@GetMapping("addPractice")
+	@GetMapping("add")
 	public String addPractice(ModelMap model) {
-		model.addAttribute("practiceVO", new Customer());
+		model.addAttribute("customer", new Customer());
 		return PageConsts.INSERT_PAGE;
 	}
 
-	@GetMapping("addPractice_jQueryValidate")
-	public String addPractice_JQueryValidate(ModelMap model) {
-		model.addAttribute("practiceVO", new Customer());
-		return "add_jQueryValidate";
+	@GetMapping("addJQueryValidate")
+	public String addJQueryValidate(ModelMap model) {
+		model.addAttribute("customer", new Customer());
+		return "addJQueryValidate";
 	}
 
 	@PostMapping("insert")
-	public String insert(@Valid Customer practiceVO, BindingResult result, ModelMap model) {
+	public String insert(@Valid Customer customer, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
 			return PageConsts.INSERT_PAGE;
 
-		transSvc.addPractice(practiceVO);
+		transSvc.addPractice(customer);
 		return listAllPaging(model);
 	}
 
 	@PostMapping("update")
-	public String update(@Valid Customer practiceVO, BindingResult result, ModelMap model) {
+	public String update(@Valid Customer customer, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors())
 			return PageConsts.UPDATE_PAGE;
 
-		transSvc.updatePractice(practiceVO);
+		transSvc.updatePractice(customer);
 		return listAllPaging(model);
 	}
 
@@ -140,9 +133,10 @@ public class MainController {
 		transSvc.deletePractice(new Integer(id));
 		return listAllPaging(model);
 	}
-
-	@GetMapping("test")
-	public String test(ModelMap model) throws IOException {
-		return "test";
+	
+	@PostMapping(value = "getByGender", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String getByGender(String gender) {
+		return getSvc.getByGenderJson(gender);
 	}
 }

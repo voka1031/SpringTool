@@ -11,12 +11,12 @@
 <body>
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
     	<h4>修改:</h4>
-		<form:form action="update" method="POST" modelAttribute="practiceVO">
+		<form:form action="update" method="POST" modelAttribute="customer">
 	<%-- 	<form:errors path="*" cssClass="errorblock" element="div" /> --%>
 			<table>
 	            <tr>
 			        <td>編號:<font color=red><b>*</b></font></td>
-			        <td><form:input type="text" path="id" id="id" size="25" value="${practiceVO.id}" cssStyle="border:0px ; font-weight: bold;"/></td>
+			        <td><form:input type="text" path="id" id="id" size="25" value="${customer.id}" cssStyle="border:0px ; font-weight: bold;"/></td>
 		        </tr>
 				<tr>
 					<td>性別:<font color=red><b>*</b></font></td>
@@ -26,12 +26,12 @@
 				</tr>
 				<tr>
 					<td>姓名:<font color=red><b>*</b></font></td>
-					<td><form:input type="text" path="name" id="name" size="25" value="${practiceVO.name}"/></td>
+					<td><form:input type="text" path="name" id="name" size="25" value="${customer.name}"/></td>
 					<td><form:errors path="name" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>電話:<font color=red><b>*</b></font></td>
-					<td><form:input type="text" path="tel" id="tel" size="25" value="${practiceVO.tel}"/> 
+					<td><form:input type="text" path="tel" id="tel" size="25" value="${customer.tel}"/> 
 					<td><form:errors path="tel" cssClass="error"/></td>
 				</tr>
 	
@@ -39,8 +39,8 @@
 			<input type="submit" value="送出修改" onClick="return check()">
 		</form:form>
 		<ul>
-		    <li><a href='<%=request.getContextPath()%>/practice/'>回單一查詢</a><br><br></li>
-			<li><a href='<%=request.getContextPath()%>/practice/listAllPaging/'>回列表</a></li>
+		    <li><a href='<%=request.getContextPath()%>/'>回單一查詢</a><br><br></li>
+			<li><a href='<%=request.getContextPath()%>/customer/listAllPaging/'>回列表</a></li>
 		</ul>
 	</div>
 <script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>

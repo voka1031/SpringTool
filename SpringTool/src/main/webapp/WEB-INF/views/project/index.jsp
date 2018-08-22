@@ -9,27 +9,26 @@
 <head>
 	<title>SpringTool</title>
 </head>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <link rel="stylesheet" href="<c:out value="${pageContext.request.contextPath}"/>/css/bootstrap-3.3.7.css">
-<link rel="stylesheet" href="<spring:theme code='stylesheet'/>" type="text/css" />
 <body>
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
-		<h3>首頁<img src="<c:url value='/practice/jcaptcha.jpg'/>" alt="圖形驗證碼" /></h3>
+		<h3>首頁<img src="<c:url value='/jcaptcha.jpg'/>" alt="圖形驗證碼" /></h3>
 		
 		<!-- 兩種寫法都可以用 -->
-		<a href="<c:url value='/practice/listAllPaging'/>">表列所有成員</a>
-<!--	<a href='<%=request.getContextPath()%>/practice/listAllPaging/'>表列所有成員</a>  -->
-	
-	    <a href='<%=request.getContextPath()%>/practice/listAll_dataTable/'>表列所有成員_dataTable</a>
-		<a href='<%=request.getContextPath()%>/practice/addPractice'>加入新成員</a>
-		<a href='<%=request.getContextPath()%>/practice/addPractice_jQueryValidate'>加入新成員_jQueryValidate</a>
-		<a href='<%=request.getContextPath()%>/practice/test'>功能測試頁</a>
-		<a href='<%=request.getContextPath()%>/practice/uploadPage'>上傳測試頁</a>
+		<a href="<c:url value='/customer/listAllPaging'/>">表列所有成員</a>
+<!--	<a href='<%=request.getContextPath()%>/customer/listAllPaging/'>表列所有成員</a>  -->
+	    <a href='<%=request.getContextPath()%>/customer/listAllDataTable/'>表列所有成員DataTable</a>
+		<a href='<%=request.getContextPath()%>/customer/add'>加入新成員</a>
+		<a href='<%=request.getContextPath()%>/customer/addJQueryValidate'>加入新成員JQueryValidate</a>
+		<a href='<%=request.getContextPath()%>/test'>功能測試頁</a>
+		<br/>
+		<a href='<%=request.getContextPath()%>/uploadPage'>上傳測試頁</a>
+		<a href='<%=request.getContextPath()%>/finance/stock'>STOCK</a>
 		<a href='#' id="outsideSubmit">表單外確認鍵</a>
 		
 		<br/><br/>
 		
-		<form METHOD="post" ACTION="<%=request.getContextPath()%>/practice/getOne_For_Display" id="queryForm">
+		<form METHOD="post" ACTION="<%=request.getContextPath()%>/customer/getOneForDisplay" id="queryForm">
 			<b>單一查詢 - 輸入編號 (如1041):</b> 
 			<input type="text" id="id" name="id" class="check_group"> 
 			<input type="submit" value="查詢" class="btn btn-info btn-sm">
@@ -61,7 +60,7 @@
 		<br>
 		<div class="fullScreenBlockDiv">
 			<div class="col-xs-12 col-sm-8" id="anchorDiv">
-				<c:if test="${not empty practiceVO}">
+				<c:if test="${not empty customer}">
 					<table class="table">
 						<tr>
 							<th>編號</th>
@@ -72,20 +71,20 @@
 							<th>刪除</th>
 						</tr>
 						<tr>
-							<td>${practiceVO.id}</td>
-							<td>${genderMap[practiceVO.sex]}</td>
-							<td>${practiceVO.name}</td>
-							<td>${practiceVO.tel}</td>
+							<td>${customer.id}</td>
+							<td>${genderMap[customer.sex]}</td>
+							<td>${customer.name}</td>
+							<td>${customer.tel}</td>
 							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/practice/getOne_For_Update">
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/getOneForUpdate">
 									<input type="submit" value="修改" class="btn btn-primary btn-xs">
-									<input type="hidden" name="id" value="${practiceVO.id}">
+									<input type="hidden" name="id" value="${customer.id}">
 								</FORM>
 							</td>
 							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/practice/delete">
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/delete">
 									<input type="submit" value="刪除" class="btn btn-danger btn-xs">
-									<input type="hidden" name="id" value="${practiceVO.id}">
+									<input type="hidden" name="id" value="${customer.id}">
 								</FORM>
 							</td>
 						</tr>
@@ -107,11 +106,8 @@
 			$genderSelect.change(function(event){
 				if($genderSelect.val()!=0){
 					event.preventDefault();
-					//with responseBody method
-					//var url = contextPath + '/practice/getByGender';
-					
-					//with restController
-					var url = contextPath + '/rest/getByGender';
+					/*停用*/
+					var url = contextPath + '/customer/getByGender';
 					
 					$.post(url, {gender : $genderSelect.val()} ,function(data){
 						$nameSelect.empty();
@@ -127,7 +123,7 @@
 			$nameSelect.change(function(){
 				if($nameSelect.val()!=0){
 					$.ajax({
-						url : contextPath + '/practice/getOne_For_Display_ajax',
+						url : contextPath + '/customer/getOneForDisplayAJAX',
 						type : 'POST',
 						data: {id : $nameSelect.val()}, 
 						cache : false,
@@ -145,7 +141,7 @@
 				alert(files.aa+", "+files.bb+", "+files.cc);
 			});
 			
-			//表單外submit TEST
+			/*表單外submit TEST*/
 			$(document).on('click','#outsideSubmit', function(e){
 				var form = $('#queryForm');
 				form.submit();

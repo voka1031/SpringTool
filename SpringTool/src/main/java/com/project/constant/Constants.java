@@ -10,6 +10,7 @@ import org.json.JSONObject;
 public class Constants {
 
 	public static final String CONTENT_TYPE_EXCEL_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	public static final String CONTENT_TYPE_CSV = "application/vnd.ms-excel";
 
 	// 錯誤訊息
 	public static final String QUERY_ATTRIBUTE_ERROR_MESSAGE = "errMsg";

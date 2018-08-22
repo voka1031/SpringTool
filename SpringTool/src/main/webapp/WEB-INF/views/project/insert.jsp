@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h3>新增</h3>
-	<form:form action="insert" method="POST" modelAttribute="practiceVO">
+	<form:form action="insert" method="POST" modelAttribute="customer">
 		<%-- <form:errors path="*" cssClass="errorblock" element="div" /> --%>
 		<table>
 			<tr>
@@ -38,7 +38,7 @@
 		<input type="submit" value="送出新增" onClick="return check()">
 	</form:form>
 	<ul>
-	    <li><a href='<%=request.getContextPath()%>/practice/'>回首頁</a><br><br></li>
+	    <li><a href='<%=request.getContextPath()%>/'>回首頁</a><br><br></li>
 	</ul>
 
 	

@@ -14,7 +14,7 @@
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 		<h3>功能測試</h3>
 		<br/>
-	    <a href='<%=request.getContextPath()%>/practice/'>首頁</a>
+	    <a href='<%=request.getContextPath()%>/'>回首頁</a>
 		<br/>
 		<div ng-controller="myCtrl"> 
 		<h3>{{theTime}}</h3>
@@ -31,18 +31,17 @@
 		</div>
 		
 		<br/>
-		<a href="#" id="responseBodyTest">responseBodyTest</a>
-		<a href='<%=request.getContextPath()%>/practice/getResponseBody?inputVal=murmur..'>responseBody_ShowInOtherPage</a>
+		<a href="#" id="responseBodyTest">responseBodyTestOnConsole</a>
+		<a href='<%=request.getContextPath()%>/getResponseBody?inputVal=murmur..'>responseBodyShowInOtherPage</a>
 	    <br/>
 	    
 	<!-- JSON output test  -->   
 		<input type="button" value="jsonTest" id="jsonTest">
 	</div>
-<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>
-<script src="<c:out value="${pageContext.request.contextPath}"/>/js/bootstrap-3.3.7.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-
-<script>
+	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>
+	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/bootstrap-3.3.7.js"></script>
+	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/angular-1.6.4.min.js"></script>
+	<script>
 	$(function() {
 		var files= ${testJsonMap};
 		var contextPath = '<c:out value="${pageContext.request.contextPath}"/>';
@@ -53,7 +52,7 @@
 		
 		$('#responseBodyTest').click(function(event){
 			event.preventDefault();
-			var url = contextPath + '/practice/getResponseBody?inputVal=murmur..';
+			var url = contextPath + '/getResponseBody?inputVal=murmur..';
 			$.get(url, function(data){ //若改用post 請改成 url,{inputVal : murmur..} , func...
 				$.each(data, function(index, obj) {
 					console.log("obj.inputVal : " + obj.inputVal);

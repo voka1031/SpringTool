@@ -7,53 +7,51 @@ import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 /**
- * @author WeiNung
- * 排程器
+ * @author WeiNung 排程器
  */
 @Configuration
 public class SchedulerConfig {
-	
+
 	@Bean
-	public MethodInvokingJobDetailFactoryBean getJobDetail(){
+	public MethodInvokingJobDetailFactoryBean getTimer() {
 		MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean();
 		bean.setTargetBeanName("routineJob");
 		bean.setTargetMethod("doJob");
 		bean.setConcurrent(false);
 		return bean;
 	}
-	
+
 	@Bean
-	public CronTriggerFactoryBean getTriggers(){
+	public CronTriggerFactoryBean getTriggers() {
 		CronTriggerFactoryBean bean = new CronTriggerFactoryBean();
-		bean.setJobDetail(getJobDetail().getObject());
-		bean.setCronExpression("0 1/50 * * * ?");
+		bean.setJobDetail(getTimer().getObject());
+		bean.setCronExpression("0 0/1 0 ? * * *");
 		return bean;
 	}
-	
+
 	@Bean
-	public MethodInvokingJobDetailFactoryBean getJobDetail_2(){
+	public MethodInvokingJobDetailFactoryBean getDBUpdate() {
 		MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean();
 		bean.setTargetBeanName("routineJob");
-		bean.setTargetMethod("doJob_2");
+		bean.setTargetMethod("dbUpdate");
 		bean.setConcurrent(false);
 		return bean;
 	}
-	
+
 	@Bean
-	public CronTriggerFactoryBean getTriggers_2(){
+	public CronTriggerFactoryBean getTriggers_2() {
 		CronTriggerFactoryBean bean = new CronTriggerFactoryBean();
-		bean.setJobDetail(getJobDetail_2().getObject());
-		bean.setCronExpression("0 0/50 * * * ?");
+		bean.setJobDetail(getDBUpdate().getObject());
+		bean.setCronExpression("0 0/5 0 ? * * *");
 		return bean;
 	}
-	
+
 	@Bean
-	public SchedulerFactoryBean schedulerFactory(){
+	public SchedulerFactoryBean schedulerFactory() {
 		SchedulerFactoryBean bean = new SchedulerFactoryBean();
-		bean.setTriggers(getTriggers().getObject(),
-					     getTriggers_2().getObject());
+		bean.setTriggers(getTriggers().getObject(), getTriggers_2().getObject());
 		bean.setAutoStartup(true);
-		bean.setSchedulerName("PracticeScheduler");
+		bean.setSchedulerName("Schedulerr");
 		return bean;
 	}
 }

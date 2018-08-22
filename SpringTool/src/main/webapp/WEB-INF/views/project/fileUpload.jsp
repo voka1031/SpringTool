@@ -44,7 +44,7 @@
 				var form = $('form')[0];
 				var formData = new FormData(form);
 				$.ajax({
-					url : contextPath + '/practice/upload',
+					url : contextPath + '/upload',
 					type : 'POST',
 					data : formData,
 					contentType : false,
