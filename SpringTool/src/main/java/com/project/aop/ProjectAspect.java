@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class PracticeAOP {
-	private static final Logger logger = LoggerFactory.getLogger(PracticeAOP.class);
+public class ProjectAspect {
+	private static final Logger logger = LoggerFactory.getLogger(ProjectAspect.class);
 
 	// 所有繼承這個interface的方法.
 	// @Pointcut("target(com.project.model.PracticeDAO_interface)")

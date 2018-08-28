@@ -8,6 +8,9 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class Constants {
+	
+	public static final String RETURN_MAIN_PAGE = "returnMainPage";
+	public static final String RETURN_MAIN_PAGE_CONTENT = "回首頁";
 
 	public static final String CONTENT_TYPE_EXCEL_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	public static final String CONTENT_TYPE_CSV = "application/vnd.ms-excel";

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="<c:out value="${pageContext.request.contextPath}"/>/css/bootstrap-3.3.7.css">
 <body>
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
-		<h3>首頁<img src="<c:url value='/jcaptcha.jpg'/>" alt="圖形驗證碼" /></h3>
+		<img src="<c:url value='/jcaptcha.jpg'/>" alt="圖形驗證碼" />
 		
 		<!-- 兩種寫法都可以用 -->
 		<a href="<c:url value='/customer/listAllPaging'/>">表列所有成員</a>

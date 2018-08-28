@@ -13,9 +13,11 @@
 <body>
 	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 		<h3>功能測試</h3>
-		<br/>
-	    <a href='<%=request.getContextPath()%>/'>回首頁</a>
-		<br/>
+		<br />
+		<a href='<%=request.getContextPath()%>/'>
+			<spring:eval expression="@jspProperties.getProperty('jsp.returnMainPage')" />
+		</a>
+		<br />
 		<div ng-controller="myCtrl"> 
 		<h3>{{theTime}}</h3>
 		</div>   

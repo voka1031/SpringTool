@@ -25,10 +25,13 @@
 			<p><input type="submit" value="送出新增"></p>
 	</form>
 	<ul>
-		<li><a href='<%=request.getContextPath()%>/'>回首頁</a><br>
-		<br></li>
+		<li>
+			<a href='<%=request.getContextPath()%>/'>
+				<spring:eval expression="@jspProperties.getProperty('jsp.returnMainPage')" />
+			</a>
+		</li>
 	</ul>
-	
+
 	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>
 	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery.validate.min.js"></script>
 	<script>

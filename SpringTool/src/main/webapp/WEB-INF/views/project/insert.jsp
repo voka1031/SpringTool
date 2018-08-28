@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -38,11 +39,15 @@
 		<input type="submit" value="送出新增" onClick="return check()">
 	</form:form>
 	<ul>
-	    <li><a href='<%=request.getContextPath()%>/'>回首頁</a><br><br></li>
+		<li>
+			<a href='<%=request.getContextPath()%>/'>
+				<spring:eval expression="@jspProperties.getProperty('jsp.returnMainPage')" />
+			</a>
+		</li>
 	</ul>
 
-	
-<script>
+
+	<script>
 	function check(){
 		
 		var male = document.getElementById('male');

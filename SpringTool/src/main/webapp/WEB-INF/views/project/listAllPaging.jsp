@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.project.model.*"%>
 
@@ -113,7 +114,10 @@ table, th, tr, td{
 				<select id="paginationSelector" class="pagingSelector"></select>
 			</div>
 		</div>
-		<a href='<%=request.getContextPath()%>/'>回首頁</a><br/>
+		<a href='<%=request.getContextPath()%>/'>
+			<spring:eval expression="@jspProperties.getProperty('jsp.returnMainPage')" />
+		</a>
+		<br />
 		<a href='<%=request.getContextPath()%>/add'>加入新成員</a>
 	</div>
 	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>

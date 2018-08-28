@@ -7,12 +7,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.*;
 
 @ControllerAdvice
-public class PracticeExceptionHandler {
+public class ProjectExceptionHandler {
 	
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ModelAndView p404_Exception(Exception ex) {
 		ModelAndView model = new ModelAndView("errorPage");
-		model.addObject("errMsg", "找不到網頁");
+		model.addObject("errMsg", "PAGE NOT FOUND");
 		return model;
 	}
 	
