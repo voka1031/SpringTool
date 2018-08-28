@@ -25,7 +25,7 @@
 			<p><input type="submit" value="送出新增"></p>
 	</form>
 	<ul>
-		<li><a href='<%=request.getContextPath()%>/practice/'>回首頁</a><br>
+		<li><a href='<%=request.getContextPath()%>/'>回首頁</a><br>
 		<br></li>
 	</ul>
 	

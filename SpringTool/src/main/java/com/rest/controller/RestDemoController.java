@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.project.model.PracticeVO;
+import com.project.model.Customer;
 import com.project.service.GetService;
 
 /**
@@ -19,17 +19,17 @@ public class RestDemoController {
 	private GetService getSvc;
 
 	@PostMapping("getByGender")
-	public List<PracticeVO> getByGender(@RequestParam String gender) {
+	public List<Customer> getByGender(@RequestParam String gender) {
 		return gender.equals("1") ? getSvc.getAll() : getSvc.getByGender(gender);
 	}
 
 	@GetMapping("typing/{id}")
-	public PracticeVO restTypingResult(@PathVariable String id) {
+	public Customer restTypingResult(@PathVariable String id) {
 		return getSvc.getOnePractice(new Integer(id));
 	}
 
 	@GetMapping("typing/all")
-	public List<PracticeVO> restTypingResultAll() {
+	public List<Customer> restTypingResultAll() {
 		return getSvc.getAll();
 	}
 

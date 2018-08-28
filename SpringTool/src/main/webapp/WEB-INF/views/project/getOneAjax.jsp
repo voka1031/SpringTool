@@ -13,20 +13,20 @@
 		<th>刪除</th>
 	</tr>
 	<tr>
-		<td>${practiceVO.id}</td>
-		<td>${genderMap[practiceVO.sex]}</td>
-		<td>${practiceVO.name}</td>
-		<td>${practiceVO.tel}</td>
+		<td>${customer.id}</td>
+		<td>${genderMap[customer.sex]}</td>
+		<td>${customer.name}</td>
+		<td>${customer.tel}</td>
 		<td>
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/practice/getOne_For_Update">
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/getOneForUpdate">
 				<input type="submit" value="修改" class="btn btn-primary btn-xs">
-				<input type="hidden" name="id" value="${practiceVO.id}">
+				<input type="hidden" name="id" value="${customer.id}">
 			</FORM>
 		</td>
 		<td>
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/practice/delete">
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/delete">
 				<input type="submit" value="刪除" class="btn btn-danger btn-xs">
-				<input type="hidden" name="id" value="${practiceVO.id}">
+				<input type="hidden" name="id" value="${customer.id}">
 			</FORM>
 		</td>
 	</tr>

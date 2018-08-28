@@ -34,12 +34,12 @@
 							<td>${pVO.name}</td>
 							<td>${pVO.tel}</td>
 							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/practice/getOne_For_Update">
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/getOneForUpdate">
 									<input type="submit" value="修改"> <input type="hidden" name="id" value="${pVO.id}">
 								</FORM>
 							</td>
 							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/practice/delete">
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/delete">
 									<input type="submit" value="刪除"> <input type="hidden" name="id" value="${pVO.id}">
 								</FORM>
 							</td>
@@ -48,7 +48,7 @@
 				</tbody>
 			</table>
 		</div>
-		<a href='<%=request.getContextPath()%>/practice/'>回首頁</a>
+		<a href='<%=request.getContextPath()%>/'>回首頁</a>
 	</div>
 	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>
 	<script src="<c:out value="${pageContext.request.contextPath}"/>/js/bootstrap-3.3.7.js"></script>

@@ -5,9 +5,9 @@ import javax.persistence.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name = "Practice")
-@SequenceGenerator(name = "seq_2", initialValue = 1041, allocationSize = 1)
-public class PracticeVO implements java.io.Serializable {
+@Table(name = "Customer")
+@SequenceGenerator(name = "seq_2", initialValue = 1125, allocationSize = 1)
+public class Customer implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
@@ -15,10 +15,10 @@ public class PracticeVO implements java.io.Serializable {
 	private String name;
 	private String tel;
 
-	public PracticeVO() {
+	public Customer() {
 	}
 
-	public PracticeVO(Integer id, String sex, String name, String tel) {
+	public Customer(Integer id, String sex, String name, String tel) {
 		super();
 		this.id = id;
 		this.sex = sex;

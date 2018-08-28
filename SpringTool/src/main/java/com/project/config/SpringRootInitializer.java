@@ -20,6 +20,7 @@ public class SpringRootInitializer implements WebApplicationInitializer {
 		ctx.register(WebConfig.class);
 		ctx.register(HibernateConfig.class);
 		ctx.register(RestConfig.class);
+		ctx.register(SchedulerConfig.class);
 		ctx.setServletContext(container);
 
 		DispatcherServlet servlet = new DispatcherServlet(ctx);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.project</groupId>
@@ -12,7 +13,7 @@
 		<spring.data.version>1.11.4.RELEASE</spring.data.version>
 		<spring.ws.version>2.4.0.RELEASE</spring.ws.version>
 		<spring.security.version>4.2.3.RELEASE</spring.security.version>
-		<hibernate.version>5.2.10.Final</hibernate.version>
+		<hibernate.version>5.3.1.Final</hibernate.version>
 		<jackson.version>2.8.9</jackson.version>
 		<tiles.version>3.0.7</tiles.version>
 		<poi.version>3.16</poi.version>
@@ -29,36 +30,36 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
 		<dependency>
-		    <groupId>org.aspectj</groupId>
-		    <artifactId>aspectjrt</artifactId>
-		    <version>${aspectj.version}</version>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
 		<dependency>
-		    <groupId>org.aspectj</groupId>
-		    <artifactId>aspectjweaver</artifactId>
-		    <version>${aspectj.version}</version>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjtools -->
 		<dependency>
-		    <groupId>org.aspectj</groupId>
-		    <artifactId>aspectjtools</artifactId>
-		    <version>${aspectj.version}</version>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>${aspectj.version}</version>
 		</dependency>
-	
-	
+
+
 		<!-- https://mvnrepository.com/artifact/aopalliance/aopalliance -->
 		<dependency>
-		    <groupId>aopalliance</groupId>
-		    <artifactId>aopalliance</artifactId>
-		    <version>1.0</version>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>1.0</version>
 		</dependency>
-			
+
 		<!-- Spring -->
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aop</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<!-- Spring -->
 		<dependency>
@@ -181,6 +182,12 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.5.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.12</version>
+		</dependency>
 		<!-- appache common -->
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -273,14 +280,10 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		
-<!--  restController 輸出成xml格式      
-		 <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>${jackson.version}</version>
-        </dependency> 
--->		
+
+		<!-- restController 輸出成xml格式 <dependency> <groupId>com.fasterxml.jackson.dataformat</groupId> 
+			<artifactId>jackson-dataformat-xml</artifactId> <version>${jackson.version}</version> 
+			</dependency> -->
 		<!-- Servlet+JSP+JSTL -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

@@ -28,15 +28,19 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.project.constant.Constants;
-import com.project.constant.PageManager;
+import com.project.constant.PageConsts;
 import com.project.service.GetService;
+import com.project.service.StockService;
 
 @Controller
-@RequestMapping("/practice")
+@RequestMapping
 public class StudioController {
 
 	@Autowired
 	private GetService getSvc;
+	
+	@Autowired
+	private StockService stockSvc;
 
 	@Value("${test.content}")
 	private String CONTENT;
@@ -44,7 +48,7 @@ public class StudioController {
 	@GetMapping
 	public String entry(ModelMap model) throws IOException {
 		System.out.println(CONTENT);
-		return PageManager.MAIN_PAGE;
+		return PageConsts.MAIN_PAGE;
 	}
 
 	@GetMapping("uploadPage")
@@ -56,6 +60,11 @@ public class StudioController {
 	@ResponseBody
 	public String restResponse(@RequestParam String gender) {
 		return getSvc.getByGenderJson(gender);
+	}
+	
+	@GetMapping("test")
+	public String test(ModelMap model) throws IOException {
+		return "test";
 	}
 
 	/**
@@ -80,12 +89,6 @@ public class StudioController {
 		ImageIO.write(getSvc.getCaptcha(randomStr), "JPEG", response.getOutputStream());
 	}
 
-	@PostMapping(value = "getByGender", produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public String getByGender(String gender) {
-		return getSvc.getByGenderJson(gender);
-	}
-
 	@GetMapping(value = "getResponseBody", produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String getResponseBody(@RequestParam(value = "inputVal") String inputVal) {
@@ -106,11 +109,16 @@ public class StudioController {
 		System.out.println("in fileUpload, getName = " + multipartFile.getName());
 		System.out.println("in fileUpload, getOriginalFilename = " + multipartFile.getOriginalFilename());
 		System.out.println("in fileUpload, getSize = " + multipartFile.getSize() + " bytes");
-		System.out.println("in fileUpload, getSize = " + multipartFile.getSize() + " bytes");
 
 		try {
-			if (StringUtils.equals(Constants.CONTENT_TYPE_EXCEL_XLSX, multipartFile.getContentType()))
+			if (StringUtils.equals(Constants.CONTENT_TYPE_EXCEL_XLSX, multipartFile.getContentType())) {
+				System.out.println("in "+Constants.CONTENT_TYPE_EXCEL_XLSX);
 				getSvc.excelCheck(multipartFile);
+			} else if (StringUtils.equals(Constants.CONTENT_TYPE_CSV, multipartFile.getContentType())) {
+				System.out.println("in "+Constants.CONTENT_TYPE_CSV);
+				stockSvc.csvCheck(multipartFile);
+			}
+			
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

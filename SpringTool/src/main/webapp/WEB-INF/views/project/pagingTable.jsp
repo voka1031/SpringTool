@@ -18,17 +18,15 @@
 		<td>${pVO.name}</td>
 		<td>${pVO.tel}</td>
 		<td>
-			<FORM METHOD="post"
-				ACTION="<%=request.getContextPath()%>/practice/getOne_For_Update">
-				<input type="submit" value="修改"> <input type="hidden"
-					name="id" value="${pVO.id}">
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/getOneForUpdate">
+				<input type="submit" value="修改">
+				<input type="hidden" name="id" value="${pVO.id}">
 			</FORM>
 		</td>
 		<td>
-			<FORM METHOD="post"
-				ACTION="<%=request.getContextPath()%>/practice/delete">
-				<input type="submit" value="刪除"> <input type="hidden"
-					name="id" value="${pVO.id}">
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/delete">
+				<input type="submit" value="刪除">
+				<input type="hidden" name="id" value="${pVO.id}">
 			</FORM>
 		</td>
 	</tr>

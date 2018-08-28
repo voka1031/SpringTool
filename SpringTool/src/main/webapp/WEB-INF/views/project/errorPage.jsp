@@ -7,6 +7,6 @@
 	<c:if test="${not empty errMsg}">
 		<h2>${errMsg}</h2>
 	</c:if>
-	<a href='<%=request.getContextPath()%>/practice/'>回首頁</a><br><br>
+	<a href='<%=request.getContextPath()%>/'>回首頁</a><br><br>
 </body>
 </html>
