@@ -1,19 +1,28 @@
-package com.project.model;
+package com.project.model.stock;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-@Entity
-public class StockDailyData implements Serializable {
+@MappedSuperclass
+public class TemplateStockData implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private StockDailyDataPK id;
+	// 產業別
+	@Id
+	private String securityType;
+
+	// 交易日期
+	@Id
+	private String tradeDate;
+
+	// 證券代號
+	@Id
+	private String securityCode;
 
 	// 證券名稱
 	private String stockName;
@@ -43,7 +52,6 @@ public class StockDailyData implements Serializable {
 	private String dir;
 
 	// 漲跌價差
-	@Column(name = "diff")
 	private String diff;
 
 	// 最後揭示買價
@@ -61,19 +69,37 @@ public class StockDailyData implements Serializable {
 	// 本益比
 	private String priceEarningRatio;
 
-	public StockDailyData() {
+	public TemplateStockData() {
 	}
 
-	public StockDailyData(String securityType, String tradeDate, String securityCode) {
-		this.id = new StockDailyDataPK(securityType, tradeDate, securityCode);
+	public TemplateStockData(String securityType, String tradeDate, String securityCode) {
+		this.securityType = securityType;
+		this.tradeDate = tradeDate;
+		this.securityCode = securityCode;
 	}
 
-	public StockDailyDataPK getId() {
-		return id;
+	public String getSecurityType() {
+		return securityType;
 	}
 
-	public void setId(StockDailyDataPK id) {
-		this.id = id;
+	public void setSecurityType(String securityType) {
+		this.securityType = securityType;
+	}
+
+	public String getTradeDate() {
+		return tradeDate;
+	}
+
+	public void setTradeDate(String tradeDate) {
+		this.tradeDate = tradeDate;
+	}
+
+	public String getSecurityCode() {
+		return securityCode;
+	}
+
+	public void setSecurityCode(String securityCode) {
+		this.securityCode = securityCode;
 	}
 
 	public String getStockName() {
@@ -82,6 +108,14 @@ public class StockDailyData implements Serializable {
 
 	public void setStockName(String stockName) {
 		this.stockName = stockName;
+	}
+
+	public String getTradeVolume() {
+		return tradeVolume;
+	}
+
+	public void setTradeVolume(String tradeVolume) {
+		this.tradeVolume = tradeVolume;
 	}
 
 	public String getTransaction() {
@@ -140,6 +174,14 @@ public class StockDailyData implements Serializable {
 		this.dir = dir;
 	}
 
+	public String getDiff() {
+		return diff;
+	}
+
+	public void setDiff(String diff) {
+		this.diff = diff;
+	}
+
 	public String getLastBestBidPrice() {
 		return lastBestBidPrice;
 	}
@@ -185,20 +227,41 @@ public class StockDailyData implements Serializable {
 		return ReflectionToStringBuilder.toString(this);
 	}
 
-	public String getTradeVolume() {
-		return tradeVolume;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((securityCode == null) ? 0 : securityCode.hashCode());
+		result = prime * result + ((securityType == null) ? 0 : securityType.hashCode());
+		result = prime * result + ((tradeDate == null) ? 0 : tradeDate.hashCode());
+		return result;
 	}
 
-	public void setTradeVolume(String tradeVolume) {
-		this.tradeVolume = tradeVolume;
-	}
-
-	public String getDiff() {
-		return diff;
-	}
-
-	public void setDiff(String diff) {
-		this.diff = diff;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TemplateStockData other = (TemplateStockData) obj;
+		if (securityCode == null) {
+			if (other.securityCode != null)
+				return false;
+		} else if (!securityCode.equals(other.securityCode))
+			return false;
+		if (securityType == null) {
+			if (other.securityType != null)
+				return false;
+		} else if (!securityType.equals(other.securityType))
+			return false;
+		if (tradeDate == null) {
+			if (other.tradeDate != null)
+				return false;
+		} else if (!tradeDate.equals(other.tradeDate))
+			return false;
+		return true;
 	}
 
 }

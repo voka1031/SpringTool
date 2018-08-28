@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -28,7 +29,7 @@ import com.google.gson.JsonObject;
 import com.project.annotation.CatchForAOP;
 import com.project.model.Customer;
 import com.project.model.CustomerInterface;
-import com.project.model.StockDailyData;
+import com.project.model.stock.TemplateStockData;
 import com.project.util.MyDateUtils;
 
 @Service
@@ -107,7 +108,6 @@ public class GetService {
 		return customerRepo.getPaging(nthPage, maxPerPage);
 	}
 
-	@CatchForAOP
 	@Transactional(readOnly = true)
 	public Integer getListSize() {
 		return customerRepo.getListSize();
@@ -157,13 +157,17 @@ public class GetService {
 
 	public List<List<Map<Object, Object>>> getStock(String securityCode, String startDate, String endDate) throws ParseException {
 
+		if (StringUtils.isBlank(securityCode))
+			securityCode = "2002";
+		
 		Map<Object, Object> map = null;
 		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
 		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
 
-		List<StockDailyData> dataList = stockService.getStock(securityCode, startDate, endDate);
+		@SuppressWarnings("unchecked")
+		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getStock(securityCode, startDate, endDate);
 
-		for (StockDailyData data : dataList) {
+		for (TemplateStockData data : dataList) {
 			
 			Double[] yData;
 
@@ -174,7 +178,7 @@ public class GetService {
 						Double.parseDouble(data.getClosingPrice()) };
 
 				map = new HashMap<>();
-				map.put("x", MyDateUtils.sdf.parse(data.getId().getTradeDate()).getTime());
+				map.put("x", MyDateUtils.sdf.parse(data.getTradeDate()).getTime());
 				map.put("y", yData);
 				dataPoints1.add(map);
 

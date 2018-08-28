@@ -14,13 +14,13 @@ public class MyDateUtils {
 	/**
 	 * @param TWDate
 	 *            YYY年mm月dd日(民國年)
-	 * @return yyyy/mm/dd
+	 * @return yyyymmdd
 	 */
 	public static String getEDATE(String TWDate) {
 		String waitToReplaced = StringUtils.substringBefore(TWDate, "年");
 		String wantToReplace = String.valueOf((Integer.parseInt(waitToReplaced) + 1911));
 		TWDate = StringUtils.replace(TWDate, waitToReplaced, wantToReplace);
-		TWDate = StringUtils.replaceAll(TWDate, "[年月]", "/");
+		TWDate = StringUtils.replaceAll(TWDate, "[年月]", "");
 		TWDate = StringUtils.substringBefore(TWDate, "日");
 		return TWDate;
 	}

@@ -25,7 +25,7 @@ public class SchedulerConfig {
 	public CronTriggerFactoryBean getTriggers() {
 		CronTriggerFactoryBean bean = new CronTriggerFactoryBean();
 		bean.setJobDetail(getTimer().getObject());
-		bean.setCronExpression("0 0/1 0 ? * * *");
+		bean.setCronExpression("0 0/10 * ? * * *");
 		return bean;
 	}
 
@@ -42,7 +42,24 @@ public class SchedulerConfig {
 	public CronTriggerFactoryBean getTriggers_2() {
 		CronTriggerFactoryBean bean = new CronTriggerFactoryBean();
 		bean.setJobDetail(getDBUpdate().getObject());
-		bean.setCronExpression("0 0/5 0 ? * * *");
+		bean.setCronExpression("0 0 15-23 ? * * *");// 每天下午三點到晚上11點內每小時0分0秒
+		return bean;
+	}
+	
+	@Bean
+	public MethodInvokingJobDetailFactoryBean doCheck() {
+		MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean();
+		bean.setTargetBeanName("routineJob");
+		bean.setTargetMethod("doCheck");
+		bean.setConcurrent(false);
+		return bean;
+	}
+	
+	@Bean
+	public CronTriggerFactoryBean getTriggers_3() {
+		CronTriggerFactoryBean bean = new CronTriggerFactoryBean();
+		bean.setJobDetail(doCheck().getObject());
+		bean.setCronExpression("0 0/2 * ? * * *");
 		return bean;
 	}
 
@@ -51,7 +68,7 @@ public class SchedulerConfig {
 		SchedulerFactoryBean bean = new SchedulerFactoryBean();
 		bean.setTriggers(getTriggers().getObject(), getTriggers_2().getObject());
 		bean.setAutoStartup(true);
-		bean.setSchedulerName("Schedulerr");
+		bean.setSchedulerName("ProjectScheduler");
 		return bean;
 	}
 }

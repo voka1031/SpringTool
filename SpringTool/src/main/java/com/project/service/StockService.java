@@ -1,7 +1,6 @@
 package com.project.service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,9 +9,9 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
@@ -22,8 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.model.StockDailyData;
-import com.project.model.StockDailyDataInterface;
+import com.project.model.stock.StockDailyDataInterface;
+import com.project.model.stock.StockInfoInterface;
+import com.project.model.stock.TemplateStockData;
 import com.project.util.MyDateUtils;
 
 @Service
@@ -32,49 +32,55 @@ public class StockService {
 	@Autowired
 	private StockDailyDataInterface stockDailyDataRepo;
 
+	@Autowired
+	private StockInfoInterface stockInfoRepo;
+
 	public static final String TWSE_URL = "http://www.twse.com.tw/exchangeReport/MI_INDEX?";
 
-	public static final String[] typeArr = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
-			"11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-			"21", "22", "23", "24", "25", "26", "27", "28", "29", "30" };
+	public static final String[] typeArray = { "01", "02", "03", "04", "05", "06", "07", "08",
+			"09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "20", "23", "0099P" };
 
-	public void execDownload() {
-		String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-		List<NameValuePair> params;
-		File file;
-		for (String type : typeArr) {
-
-			params = new LinkedList<NameValuePair>();
-			params.add(new BasicNameValuePair("response", "csv"));
-			params.add(new BasicNameValuePair("type", type));
-			params.add(new BasicNameValuePair("date", date));
-
-			String paramString = URLEncodedUtils.format(params, "UTF-8");
-			String url = TWSE_URL + paramString;
-
-			System.out.println(paramString);
-			System.out.println("downloading : " + paramString);
-			try {
-				String csvFile = "/Users/user/Downloads/csv/" + date + "_T" + type + ".csv";
-				file = new File(csvFile);
-
-				if (!file.exists()) {
-					downloadUsingNIO(url, csvFile);
-				} else {
-					System.out.println(csvFile + "已存在");
-				}
-				saveData(new BufferedReader(new InputStreamReader(new FileInputStream(csvFile), "Big5")), type);
-				System.out.println("downloading : " + paramString + " finished");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public void execDownload() throws InterruptedException {
+		String date = new SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
+		for (String type : typeArray)
+			downloadCSV(date, type);
 	}
 
-	private static void downloadUsingNIO(String urlStr, String file) throws IOException {
+	private void downloadCSV(String date, String type) throws InterruptedException {
+		System.out.printf("downloadCSV date : %s, type : %s ", date, type);
+
+		List<NameValuePair> params = new LinkedList<NameValuePair>();
+		params.add(new BasicNameValuePair("response", "csv"));
+		params.add(new BasicNameValuePair("type", type));
+		params.add(new BasicNameValuePair("date", date));
+
+		String paramString = URLEncodedUtils.format(params, "UTF-8");
+		String url = TWSE_URL + paramString;
+
+		System.out.println("downloading : " + paramString);
+		
+		try {
+			String csvFileUrl = "/Users/user/Downloads/csv/" + date + "_T" + type + ".csv";
+
+			if (stockDailyDataRepo.isDataExistByTradeDate(type, date)) {
+				System.out.println(csvFileUrl + "資料庫已有資料");
+			} else {
+				System.out.println(csvFileUrl + "資料庫無資料，開始下載");
+				TimeUnit.SECONDS.sleep(5);
+				downloadUsingNIO(url, csvFileUrl);
+				saveData(new BufferedReader(new InputStreamReader(new FileInputStream(csvFileUrl), "Big5")), type);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void downloadUsingNIO(String urlStr, String localURL) throws IOException {
 		URL url = new URL(urlStr);
 		ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-		FileOutputStream fos = new FileOutputStream(file);
+		FileOutputStream fos = new FileOutputStream(localURL);
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		fos.close();
 		rbc.close();
@@ -85,7 +91,7 @@ public class StockService {
 		String line = "";
 		String csvSplitBy = "\",\"";
 		String tradeDate = "";
-		StockDailyData data = null;
+		TemplateStockData data = null;
 
 		while ((line = br.readLine()) != null) {
 			String[] stock = getTrim(line.split(csvSplitBy));
@@ -94,7 +100,7 @@ public class StockService {
 			} else if (!StringUtils.equals("證券代號", stock[0])
 					&& stock.length == 16
 					&& StringUtils.isNotEmpty(tradeDate)) {
-				data = new StockDailyData(type, tradeDate, stock[0]);
+				data = new TemplateStockData(type, tradeDate, getTrim2(stock[0]));
 				data.setStockName(stock[1]);
 				data.setTradeVolume(stock[2]);
 				data.setTransaction(stock[3]);
@@ -110,9 +116,13 @@ public class StockService {
 				data.setLastBestAskPrice(stock[13]);
 				data.setLastBestAskVolume(stock[14]);
 				data.setPriceEarningRatio(stock[15]);
-				stockDailyDataRepo.insert(data);
+				String typeClass = stockInfoRepo.getClass(type).getName();
+				System.out.printf("insert in action - typeClass : %s, securityCode : %s ",
+						typeClass, getTrim2(stock[0])).println();
+				stockDailyDataRepo.insert(typeClass, data);
 			}
 		}
+		System.out.println("downloading type = " + type + " finished");
 	}
 
 	private static String[] getTrim(String[] strArray) {
@@ -120,6 +130,10 @@ public class StockService {
 		for (int i = 0; i < strArray.length; i++)
 			newStrArr[i] = strArray[i].replaceAll("[,\"]", "");
 		return newStrArr;
+	}
+
+	private static String getTrim2(String str) {
+		return str.replaceAll("[=\"]", "");
 	}
 
 	public void csvCheck(MultipartFile multipartFile) {
@@ -130,18 +144,8 @@ public class StockService {
 		}
 	}
 
-	public List<StockDailyData> getStock(String securityCode, String startDate, String endDate) {
-		System.out.println("getStock");
-		List<StockDailyData> list = stockDailyDataRepo.getBySecurityCode(securityCode, startDate, endDate);
-		for (StockDailyData data : list) {
-			System.out.printf("date : %s, id : %s, highPrice : %s, lowPrice : %s, OpenPrice : %s, ClosePrice : %s",
-					data.getId().getTradeDate(), data.getId().getSecurityCode(),
-					data.getHighestPrice(), data.getLowestPrice(),
-					data.getOpeningPrice(), data.getClosingPrice()).println();
-		}
-
-		return list;
-
+	public List<? extends TemplateStockData> getStock(String securityCode, String startDate, String endDate) {
+		return stockDailyDataRepo.getBySecurityCode(securityCode, startDate, endDate);
 	}
 
 }
