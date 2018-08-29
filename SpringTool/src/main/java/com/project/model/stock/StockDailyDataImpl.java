@@ -49,33 +49,25 @@ public class StockDailyDataImpl implements StockDailyDataInterface {
 	@Transactional(readOnly = true)
 	public List<? extends TemplateStockData> getStock(String securityCode, String startDate, String endDate) {
 		Class<?> classType = stockInfoRepo.getTypeClass(securityCode);
-		System.out.println("classType : " + classType);
-	
-		// 預設查詢範圍:近6個月
-		if (StringUtils.isBlank(startDate)) {
-			Calendar c = Calendar.getInstance();
-			c.setTime(new Date());
-			c.add(Calendar.MONTH, -6);
-			startDate = MyDateUtils.sdf.format(c.getTime());
-		}
-		if (StringUtils.isBlank(endDate))
-			endDate = MyDateUtils.sdf.format(new Date());
-	
+
+		startDate = getStartDate(startDate);
+		endDate = getEndDate(endDate);
+
 		CriteriaBuilder cb = getSession().getCriteriaBuilder();
 		CriteriaQuery cq = cb.createQuery(classType);
 		Root root = cq.from(classType);
 		cq.select(root);
-	
+
 		List<Predicate> tp = new ArrayList<Predicate>();
 		tp.add(cb.equal(root.get("securityCode"), securityCode));
 		tp.add(cb.between(root.get("tradeDate"), startDate, endDate));
-	
+
 		Predicate[] pArray = new Predicate[tp.size()];
 		cq.where(tp.toArray(pArray));
 		cq.orderBy(cb.desc(root.get("tradeDate")));
-	
+
 		TypedQuery query = getSession().createQuery(cq);
-	
+
 		return query.getResultList();
 	}
 
@@ -85,33 +77,26 @@ public class StockDailyDataImpl implements StockDailyDataInterface {
 	public List<? extends TemplateStockData> getMA(String securityCode, String startDate, String endDate, int countdays) {
 
 		Class<?> classType = stockInfoRepo.getTypeClass(securityCode);
-		System.out.println("classType : " + classType);
 
-		// 預設查詢範圍:近6個月
-		if (StringUtils.isBlank(startDate)) {
-			Calendar c = Calendar.getInstance();
-			c.setTime(new Date());
-			c.add(Calendar.MONTH, -6);
-			startDate = MyDateUtils.sdf.format(c.getTime());
-		}
-		if (StringUtils.isBlank(endDate))
-			endDate = MyDateUtils.sdf.format(new Date());
+		startDate = getStartDate(startDate);
+		endDate = getEndDate(endDate);
 
-		/* getCount */
+		// step1 count(between days)
 		CriteriaBuilder countBuilder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Long> countQuery = countBuilder.createQuery(Long.class);
-		Root testRoot = countQuery.from(classType);
-		countQuery.select(countBuilder.count(testRoot));
+		Root countRoot = countQuery.from(classType);
+		countQuery.select(countBuilder.count(countRoot));
 
 		List<Predicate> countPList = new ArrayList<Predicate>();
-		countPList.add(countBuilder.equal(testRoot.get("securityCode"), securityCode));
-		countPList.add(countBuilder.between(testRoot.get("tradeDate"), startDate, endDate));
+		countPList.add(countBuilder.equal(countRoot.get("securityCode"), securityCode));
+		countPList.add(countBuilder.between(countRoot.get("tradeDate"), startDate, endDate));
 
 		Predicate[] countPArray = new Predicate[countPList.size()];
 		countQuery.where(countPList.toArray(countPArray));
-		countQuery.orderBy(countBuilder.desc(testRoot.get("tradeDate")));
+		countQuery.orderBy(countBuilder.desc(countRoot.get("tradeDate")));
 		Long dataCount = getSession().createQuery(countQuery).getSingleResult();
 
+		// step2 rslt
 		CriteriaBuilder cb = getSession().getCriteriaBuilder();
 		CriteriaQuery cq = cb.createQuery(classType);
 		Root root = cq.from(classType);
@@ -130,13 +115,29 @@ public class StockDailyDataImpl implements StockDailyDataInterface {
 		return query.getResultList();
 	}
 
+	private String getEndDate(String endDate) {
+		if (StringUtils.isBlank(endDate))
+			endDate = MyDateUtils.sdf.format(new Date());
+		return endDate;
+	}
+
+	private String getStartDate(String startDate) {
+		// 預設查詢範圍:近6個月
+		if (StringUtils.isBlank(startDate)) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			c.add(Calendar.MONTH, -6);
+			startDate = MyDateUtils.sdf.format(c.getTime());
+		}
+		return startDate;
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@Transactional(readOnly = true)
 	public boolean isDataExistByTradeDate(String type, String tradeDate) {
 
 		Class<?> classType = stockInfoRepo.getClass(type);
-		System.out.println("classType : " + classType);
 
 		CriteriaBuilder cb = getSession().getCriteriaBuilder();
 		CriteriaQuery cq = cb.createQuery(classType);

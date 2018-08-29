@@ -45,10 +45,11 @@ public class GetService {
 	@Autowired
 	private StockService stockService;
 
+	public static final String DEFAULT_STOCK = "0050";
+
 	@Transactional(readOnly = true)
 	public String getByGenderJson(String gender) {
 		JsonArray array = new JsonArray();
-
 		List<Customer> list = gender.equals("1") ? getAll() : getByGender(gender);
 
 		for (Customer pVO : list) {
@@ -77,8 +78,7 @@ public class GetService {
 			Iterator<Row> iterator = sheet.iterator();
 			while (iterator.hasNext()) {
 				Row row = iterator.next();
-				System.out.println(
-						"row.number : " + row.getRowNum() + ", row.getLastCellNum() : " + row.getLastCellNum());
+				System.out.println("row.number : " + row.getRowNum() + ", row.getLastCellNum() : " + row.getLastCellNum());
 				for (int i = 0; i < row.getLastCellNum(); i++)
 					System.out.print(row.getCell(i) + ", ");
 				System.out.println();
@@ -138,8 +138,7 @@ public class GetService {
 
 		// 隨機產生155條干擾線，使圖像中的認證碼不易被其它程序探測到
 		for (int i = 0; i < 155; i++) {
-			graphic.setColor(
-					new Color(random.nextInt(155) + 100, random.nextInt(155) + 100, random.nextInt(155) + 100));
+			graphic.setColor(new Color(random.nextInt(155) + 100, random.nextInt(155) + 100, random.nextInt(155) + 100));
 			int x = random.nextInt(imgWidth);
 			int y = random.nextInt(imgHeight);
 			int xl = random.nextInt(12);
@@ -150,7 +149,8 @@ public class GetService {
 		// 將認證碼顯示到圖像中
 		for (int i = 0; i < randomStr.length(); i++) {
 			graphic.setColor(new Color(random.nextInt(123), random.nextInt(123), random.nextInt(123)));
-			graphic.drawString(randomStr.substring(i, i + 1), fontSize * i + random.nextInt(fontSize / 2),
+			graphic.drawString(randomStr.substring(i, i + 1),
+					fontSize * i + random.nextInt(fontSize / 2),
 					fontSize - 3 + random.nextInt(fontSize / 2));
 		}
 
@@ -163,24 +163,26 @@ public class GetService {
 			throws ParseException {
 
 		if (StringUtils.isBlank(securityCode))
-			securityCode = "2002";
+			securityCode = DEFAULT_STOCK;
 
 		Map<Object, Object> map = null;
 		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
 		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
 
-		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getStock(securityCode, startDate,
-				endDate);
+		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getStock(securityCode, startDate, endDate);
 
 		for (TemplateStockData data : dataList) {
 
 			Double[] yData;
 
 			try {
-				yData = new Double[] { Double.parseDouble(data.getOpeningPrice()),
+
+				yData = new Double[] {
+						Double.parseDouble(data.getOpeningPrice()),
 						Double.parseDouble(data.getHighestPrice()),
 						Double.parseDouble(data.getLowestPrice()),
-						Double.parseDouble(data.getClosingPrice()) };
+						Double.parseDouble(data.getClosingPrice())
+				};
 
 				map = new HashMap<>();
 				map.put("x", MyDateUtils.sdf.parse(data.getTradeDate()).getTime());
@@ -199,7 +201,7 @@ public class GetService {
 	public List<List<Map<Object, Object>>> getAvgLine(String securityCode, String startDate, String endDate, int avgDays) throws ParseException {
 
 		if (StringUtils.isBlank(securityCode))
-			securityCode = "2002";
+			securityCode = DEFAULT_STOCK;
 
 		Map<Object, Object> map = null;
 		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
@@ -207,15 +209,12 @@ public class GetService {
 
 		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getMA(securityCode, startDate, endDate, avgDays);
 
-		for (TemplateStockData data : dataList)
-			System.out.println("date : " + data.getTradeDate());
-
 		for (int i = avgDays; i < dataList.size(); i++) {
 			BigDecimal temp = new BigDecimal("0");
 
 			int actualCount = 0;
 			for (int c = i; c < i + avgDays; c++) {
-				if(NumberUtils.isCreatable(dataList.get(c - avgDays).getClosingPrice())) {
+				if (NumberUtils.isCreatable(dataList.get(c - avgDays).getClosingPrice())) {
 					temp = temp.add(new BigDecimal(dataList.get(c - avgDays).getClosingPrice()));
 					actualCount++;
 				}

@@ -42,6 +42,13 @@ public class FinanceController {
 	@GetMapping("getStock")
 	public String getStock(@Valid  @ModelAttribute StockRequest req, BindingResult result, ModelMap model)
 			throws IOException, ParseException {
+		StockInfo info = getSvc.getStockInfo(req.getSecurityCode());
+		System.out.println("req :" + req);
+		model.addAttribute("stockName", info == null ? "Stock" : info.getStockName());
+		model.addAttribute("securityCode", info == null ? "" : info.getSecurityCode());
+		model.addAttribute("dataPointsList", getSvc.getStock(req.getSecurityCode(), req.getStartDate(), req.getEndDate()));
+		model.addAttribute("avgLine10", getSvc.getAvgLine(req.getSecurityCode(), req.getStartDate(), req.getEndDate(), 10));
+		model.addAttribute("avgLine30", getSvc.getAvgLine(req.getSecurityCode(), req.getStartDate(), req.getEndDate(), 30));
 		return "stock";
 	}
 

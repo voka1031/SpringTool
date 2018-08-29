@@ -117,9 +117,8 @@ public class StockService {
 				data.setLastBestAskVolume(stock[14]);
 				data.setPriceEarningRatio(stock[15]);
 				String typeClass = stockInfoRepo.getClass(type).getName();
-				System.out
-						.printf("insert in action - typeClass : %s, securityCode : %s ", typeClass, getTrim2(stock[0]))
-						.println();
+				System.out.printf("insert in action - typeClass : %s, securityCode : %s ",
+						typeClass, getTrim2(stock[0])).println();
 				stockDailyDataRepo.insert(typeClass, data);
 			}
 		}
@@ -148,7 +147,7 @@ public class StockService {
 	public List<? extends TemplateStockData> getStock(String securityCode, String startDate, String endDate) {
 		return stockDailyDataRepo.getStock(securityCode, startDate, endDate);
 	}
-	
+
 	public List<? extends TemplateStockData> getMA(String securityCode, String startDate, String endDate, int countdays) {
 		return stockDailyDataRepo.getMA(securityCode, startDate, endDate, countdays);
 	}
