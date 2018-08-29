@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -29,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.project.annotation.CatchForAOP;
 import com.project.model.Customer;
 import com.project.model.CustomerInterface;
+import com.project.model.stock.StockInfo;
 import com.project.model.stock.TemplateStockData;
 import com.project.util.MyDateUtils;
 
@@ -146,8 +150,7 @@ public class GetService {
 		// 將認證碼顯示到圖像中
 		for (int i = 0; i < randomStr.length(); i++) {
 			graphic.setColor(new Color(random.nextInt(123), random.nextInt(123), random.nextInt(123)));
-			graphic.drawString(randomStr.substring(i, i + 1),
-					fontSize * i + random.nextInt(fontSize / 2),
+			graphic.drawString(randomStr.substring(i, i + 1), fontSize * i + random.nextInt(fontSize / 2),
 					fontSize - 3 + random.nextInt(fontSize / 2));
 		}
 
@@ -155,20 +158,22 @@ public class GetService {
 		return image;
 	}
 
-	public List<List<Map<Object, Object>>> getStock(String securityCode, String startDate, String endDate) throws ParseException {
+	@SuppressWarnings("unchecked")
+	public List<List<Map<Object, Object>>> getStock(String securityCode, String startDate, String endDate)
+			throws ParseException {
 
 		if (StringUtils.isBlank(securityCode))
 			securityCode = "2002";
-		
+
 		Map<Object, Object> map = null;
 		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
 		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
 
-		@SuppressWarnings("unchecked")
-		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getStock(securityCode, startDate, endDate);
+		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getStock(securityCode, startDate,
+				endDate);
 
 		for (TemplateStockData data : dataList) {
-			
+
 			Double[] yData;
 
 			try {
@@ -190,5 +195,44 @@ public class GetService {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<List<Map<Object, Object>>> getAvgLine(String securityCode, String startDate, String endDate, int avgDays) throws ParseException {
+
+		if (StringUtils.isBlank(securityCode))
+			securityCode = "2002";
+
+		Map<Object, Object> map = null;
+		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
+		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
+
+		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getStockWithCountdays(securityCode, startDate, endDate, avgDays);
+
+		for (TemplateStockData data : dataList)
+			System.out.println("date : " + data.getTradeDate());
+
+		for (int i = avgDays; i < dataList.size(); i++) {
+			BigDecimal temp = new BigDecimal("0");
+
+			int actualCount = 0;
+			for (int c = i; c < i + avgDays; c++) {
+				if(NumberUtils.isCreatable(dataList.get(c - avgDays).getClosingPrice())) {
+					temp = temp.add(new BigDecimal(dataList.get(c - avgDays).getClosingPrice()));
+					actualCount++;
+				}
+			}
+
+			map = new HashMap<>();
+			map.put("x", MyDateUtils.sdf.parse(dataList.get(i - avgDays).getTradeDate()).getTime());
+			map.put("y", temp.divide(new BigDecimal(actualCount), 2, RoundingMode.UP).doubleValue());
+			dataPoints1.add(map);
+
+		}
+		list.add(dataPoints1);
+		return list;
+	}
+
+	public StockInfo getStockInfo(String securityCode) {
+		return stockService.getStockInfo(securityCode);
+	}
 
 }

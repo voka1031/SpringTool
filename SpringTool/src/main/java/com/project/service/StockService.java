@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.model.stock.StockDailyDataInterface;
+import com.project.model.stock.StockInfo;
 import com.project.model.stock.StockInfoInterface;
 import com.project.model.stock.TemplateStockData;
 import com.project.util.MyDateUtils;
@@ -37,8 +38,8 @@ public class StockService {
 
 	public static final String TWSE_URL = "http://www.twse.com.tw/exchangeReport/MI_INDEX?";
 
-	public static final String[] typeArray = { "01", "02", "03", "04", "05", "06", "07", "08",
-			"09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "20", "23", "0099P" };
+	public static final String[] typeArray = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
+			"13", "14", "15", "16", "17", "18", "20", "23", "0099P" };
 
 	public void execDownload() throws InterruptedException {
 		String date = new SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
@@ -58,7 +59,7 @@ public class StockService {
 		String url = TWSE_URL + paramString;
 
 		System.out.println("downloading : " + paramString);
-		
+
 		try {
 			String csvFileUrl = "/Users/user/Downloads/csv/" + date + "_T" + type + ".csv";
 
@@ -96,9 +97,8 @@ public class StockService {
 		while ((line = br.readLine()) != null) {
 			String[] stock = getTrim(line.split(csvSplitBy));
 			if (stock.length == 1 && StringUtils.contains(stock[0], "每日收盤行情") && StringUtils.isEmpty(tradeDate)) {
-				tradeDate = MyDateUtils.getEDATE(StringUtils.substringBefore(stock[0], "每"));
-			} else if (!StringUtils.equals("證券代號", stock[0])
-					&& stock.length == 16
+				tradeDate = MyDateUtils.getEDateString(StringUtils.substringBefore(stock[0], "每"));
+			} else if (!StringUtils.equals("證券代號", stock[0]) && stock.length == 16
 					&& StringUtils.isNotEmpty(tradeDate)) {
 				data = new TemplateStockData(type, tradeDate, getTrim2(stock[0]));
 				data.setStockName(stock[1]);
@@ -117,8 +117,9 @@ public class StockService {
 				data.setLastBestAskVolume(stock[14]);
 				data.setPriceEarningRatio(stock[15]);
 				String typeClass = stockInfoRepo.getClass(type).getName();
-				System.out.printf("insert in action - typeClass : %s, securityCode : %s ",
-						typeClass, getTrim2(stock[0])).println();
+				System.out
+						.printf("insert in action - typeClass : %s, securityCode : %s ", typeClass, getTrim2(stock[0]))
+						.println();
 				stockDailyDataRepo.insert(typeClass, data);
 			}
 		}
@@ -146,6 +147,14 @@ public class StockService {
 
 	public List<? extends TemplateStockData> getStock(String securityCode, String startDate, String endDate) {
 		return stockDailyDataRepo.getBySecurityCode(securityCode, startDate, endDate);
+	}
+	
+	public List<? extends TemplateStockData> getStockWithCountdays(String securityCode, String startDate, String endDate, int countdays) {
+		return stockDailyDataRepo.getBySecurityCodeAndCountdays(securityCode, startDate, endDate, countdays);
+	}
+
+	public StockInfo getStockInfo(String securityCode) {
+		return stockInfoRepo.getStockInfo(securityCode);
 	}
 
 }

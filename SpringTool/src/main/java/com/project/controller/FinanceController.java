@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.project.model.stock.StockInfo;
 import com.project.model.stock.StockRequest;
 import com.project.service.GetService;
 
@@ -28,7 +29,13 @@ public class FinanceController {
 	public String stock(ModelMap model, @PathVariable String stockId,
 			@PathVariable String startDate, @PathVariable String endDate)
 			throws IOException, ParseException {
+		StockInfo info = getSvc.getStockInfo(stockId);
+		System.out.println("StockInfo :" + info);
+		model.addAttribute("stockName", info == null ? "Stock" : info.getStockName());
+		model.addAttribute("securityCode", info == null ? "" : info.getSecurityCode());
 		model.addAttribute("dataPointsList", getSvc.getStock(stockId, startDate, endDate));
+		model.addAttribute("avgLine10", getSvc.getAvgLine(stockId, startDate, endDate, 10));
+		model.addAttribute("avgLine30", getSvc.getAvgLine(stockId, startDate, endDate, 30));
 		return "stock";
 	}
 
@@ -36,7 +43,13 @@ public class FinanceController {
 	public String getStock(@Valid  @ModelAttribute StockRequest req, BindingResult result, ModelMap model)
 			throws IOException, ParseException {
 		System.out.println("req : " + req);
+		StockInfo info = getSvc.getStockInfo(req.getSecurityCode());
+		System.out.println("StockInfo :" + info);
+		model.addAttribute("stockName", info == null ? "Stock" : info.getStockName());
+		model.addAttribute("securityCode", info == null ? "" : info.getSecurityCode());
 		model.addAttribute("dataPointsList", getSvc.getStock(req.getSecurityCode(), req.getStartDate(), req.getEndDate()));
+		model.addAttribute("avgLine10", getSvc.getAvgLine(req.getSecurityCode(), req.getStartDate(), req.getEndDate(), 10));
+		model.addAttribute("avgLine30", getSvc.getAvgLine(req.getSecurityCode(), req.getStartDate(), req.getEndDate(), 30));
 		return "stock";
 	}
 

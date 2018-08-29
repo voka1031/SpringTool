@@ -76,4 +76,10 @@ public class StockInfoImpl implements StockInfoInterface {
 			c = Stock_0099P.class;
 		return c;
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public StockInfo getStockInfo(String securityCode) {
+		return getSession().get(StockInfo.class, securityCode);
+	}
 }

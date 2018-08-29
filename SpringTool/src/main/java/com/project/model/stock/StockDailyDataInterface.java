@@ -8,4 +8,6 @@ public interface StockDailyDataInterface {
 	public List<? extends TemplateStockData> getBySecurityCode(String securityCode, String startDate, String endDate);
 	
 	public boolean isDataExistByTradeDate(String type, String tradeDate);
+	
+	public List<? extends TemplateStockData> getBySecurityCodeAndCountdays(String securityCode, String startDate, String endDate, int countdays);
 }

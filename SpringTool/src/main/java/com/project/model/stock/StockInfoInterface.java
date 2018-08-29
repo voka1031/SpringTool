@@ -7,5 +7,7 @@ public interface StockInfoInterface {
 	Class<?> getTypeClass(String securityCode);
 
 	Class<?> getClass(String securityType);
+	
+	public StockInfo getStockInfo(String securityCode);
 
 }
