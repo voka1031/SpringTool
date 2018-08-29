@@ -44,16 +44,45 @@ public class StockDailyDataImpl implements StockDailyDataInterface {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.project.model.stock.StockDailyDataInterface#getBySecurityCodeAndCountdays(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-	 */
-	/* (non-Javadoc)
-	 * @see com.project.model.stock.StockDailyDataInterface#getBySecurityCodeAndCountdays(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@Transactional(readOnly = true)
-	public List<? extends TemplateStockData> getBySecurityCodeAndCountdays(String securityCode, String startDate, String endDate, int countdays) {
+	public List<? extends TemplateStockData> getStock(String securityCode, String startDate, String endDate) {
+		Class<?> classType = stockInfoRepo.getTypeClass(securityCode);
+		System.out.println("classType : " + classType);
+	
+		// 預設查詢範圍:近6個月
+		if (StringUtils.isBlank(startDate)) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			c.add(Calendar.MONTH, -6);
+			startDate = MyDateUtils.sdf.format(c.getTime());
+		}
+		if (StringUtils.isBlank(endDate))
+			endDate = MyDateUtils.sdf.format(new Date());
+	
+		CriteriaBuilder cb = getSession().getCriteriaBuilder();
+		CriteriaQuery cq = cb.createQuery(classType);
+		Root root = cq.from(classType);
+		cq.select(root);
+	
+		List<Predicate> tp = new ArrayList<Predicate>();
+		tp.add(cb.equal(root.get("securityCode"), securityCode));
+		tp.add(cb.between(root.get("tradeDate"), startDate, endDate));
+	
+		Predicate[] pArray = new Predicate[tp.size()];
+		cq.where(tp.toArray(pArray));
+		cq.orderBy(cb.desc(root.get("tradeDate")));
+	
+		TypedQuery query = getSession().createQuery(cq);
+	
+		return query.getResultList();
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	@Transactional(readOnly = true)
+	public List<? extends TemplateStockData> getMA(String securityCode, String startDate, String endDate, int countdays) {
 
 		Class<?> classType = stockInfoRepo.getTypeClass(securityCode);
 		System.out.println("classType : " + classType);
@@ -82,7 +111,7 @@ public class StockDailyDataImpl implements StockDailyDataInterface {
 		countQuery.where(countPList.toArray(countPArray));
 		countQuery.orderBy(countBuilder.desc(testRoot.get("tradeDate")));
 		Long dataCount = getSession().createQuery(countQuery).getSingleResult();
-		
+
 		CriteriaBuilder cb = getSession().getCriteriaBuilder();
 		CriteriaQuery cq = cb.createQuery(classType);
 		Root root = cq.from(classType);
@@ -131,41 +160,6 @@ public class StockDailyDataImpl implements StockDailyDataInterface {
 			return false;
 		}
 
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	@Transactional(readOnly = true)
-	public List<? extends TemplateStockData> getBySecurityCode(String securityCode, String startDate, String endDate) {
-		Class<?> classType = stockInfoRepo.getTypeClass(securityCode);
-		System.out.println("classType : " + classType);
-
-		// 預設查詢範圍:近6個月
-		if (StringUtils.isBlank(startDate)) {
-			Calendar c = Calendar.getInstance();
-			c.setTime(new Date());
-			c.add(Calendar.MONTH, -6);
-			startDate = MyDateUtils.sdf.format(c.getTime());
-		}
-		if (StringUtils.isBlank(endDate))
-			endDate = MyDateUtils.sdf.format(new Date());
-
-		CriteriaBuilder cb = getSession().getCriteriaBuilder();
-		CriteriaQuery cq = cb.createQuery(classType);
-		Root root = cq.from(classType);
-		cq.select(root);
-
-		List<Predicate> tp = new ArrayList<Predicate>();
-		tp.add(cb.equal(root.get("securityCode"), securityCode));
-		tp.add(cb.between(root.get("tradeDate"), startDate, endDate));
-
-		Predicate[] pArray = new Predicate[tp.size()];
-		cq.where(tp.toArray(pArray));
-		cq.orderBy(cb.desc(root.get("tradeDate")));
-
-		TypedQuery query = getSession().createQuery(cq);
-
-		return query.getResultList();
 	}
 
 }

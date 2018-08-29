@@ -205,7 +205,7 @@ public class GetService {
 		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
 		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
 
-		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getStockWithCountdays(securityCode, startDate, endDate, avgDays);
+		List<TemplateStockData> dataList = (List<TemplateStockData>) stockService.getMA(securityCode, startDate, endDate, avgDays);
 
 		for (TemplateStockData data : dataList)
 			System.out.println("date : " + data.getTradeDate());

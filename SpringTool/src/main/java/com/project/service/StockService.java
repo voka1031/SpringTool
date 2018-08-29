@@ -146,11 +146,11 @@ public class StockService {
 	}
 
 	public List<? extends TemplateStockData> getStock(String securityCode, String startDate, String endDate) {
-		return stockDailyDataRepo.getBySecurityCode(securityCode, startDate, endDate);
+		return stockDailyDataRepo.getStock(securityCode, startDate, endDate);
 	}
 	
-	public List<? extends TemplateStockData> getStockWithCountdays(String securityCode, String startDate, String endDate, int countdays) {
-		return stockDailyDataRepo.getBySecurityCodeAndCountdays(securityCode, startDate, endDate, countdays);
+	public List<? extends TemplateStockData> getMA(String securityCode, String startDate, String endDate, int countdays) {
+		return stockDailyDataRepo.getMA(securityCode, startDate, endDate, countdays);
 	}
 
 	public StockInfo getStockInfo(String securityCode) {

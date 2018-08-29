@@ -1,18 +1,20 @@
-package com.project.model.stock;
+package com.project.model.stock.table;
 
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import com.project.model.stock.TemplateStockData;
+
 @Entity
-public class Stock_05 extends TemplateStockData {
+public class Stock_18 extends TemplateStockData {
 
 	private static final long serialVersionUID = 1L;
 
-	public Stock_05() {
+	public Stock_18() {
 	}
 
-	public Stock_05(String securityType, String tradeDate, String securityCode) {
+	public Stock_18(String securityType, String tradeDate, String securityCode) {
 		super(securityType, tradeDate, securityCode);
 	}
 

@@ -7,6 +7,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.model.stock.table.Stock_0099P;
+import com.project.model.stock.table.Stock_01;
+import com.project.model.stock.table.Stock_02;
+import com.project.model.stock.table.Stock_03;
+import com.project.model.stock.table.Stock_04;
+import com.project.model.stock.table.Stock_05;
+import com.project.model.stock.table.Stock_06;
+import com.project.model.stock.table.Stock_07;
+import com.project.model.stock.table.Stock_08;
+import com.project.model.stock.table.Stock_09;
+import com.project.model.stock.table.Stock_10;
+import com.project.model.stock.table.Stock_11;
+import com.project.model.stock.table.Stock_12;
+import com.project.model.stock.table.Stock_13;
+import com.project.model.stock.table.Stock_14;
+import com.project.model.stock.table.Stock_15;
+import com.project.model.stock.table.Stock_16;
+import com.project.model.stock.table.Stock_17;
+import com.project.model.stock.table.Stock_18;
+import com.project.model.stock.table.Stock_20;
+import com.project.model.stock.table.Stock_23;
+
 @Repository
 public class StockInfoImpl implements StockInfoInterface {
 	
