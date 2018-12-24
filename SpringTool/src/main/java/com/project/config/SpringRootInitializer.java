@@ -9,9 +9,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.util.Log4jConfigListener;
 
-@SuppressWarnings("deprecation") // for log4j 1.x
 public class SpringRootInitializer implements WebApplicationInitializer {
 
 	public void onStartup(ServletContext container) throws ServletException {
@@ -34,11 +32,5 @@ public class SpringRootInitializer implements WebApplicationInitializer {
 		fr.setInitParameter("encoding", "UTF-8");
 		fr.setInitParameter("forceEncoding", "true");
 		fr.addMappingForUrlPatterns(null, true, "/*");
-
-		container.setInitParameter("log4jConfigLocation", "classpath:log4j.properties");
-		container.setInitParameter("log4jRefreshInterval", "90000");
-		container.setInitParameter("log4jExposeWebAppRoot", "false");
-
-		container.addListener(new Log4jConfigListener());
 	}
 }

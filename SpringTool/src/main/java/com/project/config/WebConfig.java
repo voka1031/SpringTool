@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.theme.CookieThemeResolver;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -26,7 +26,7 @@ import com.project.handler.ProjectInterceptor;
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "com.project")
 @PropertySource("classpath:apConfig.properties")
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig implements WebMvcConfigurer {
 	
 	@Bean(name = "jspProperties")
 	public PropertiesFactoryBean getJspProperties() {
