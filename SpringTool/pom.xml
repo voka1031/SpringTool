@@ -9,12 +9,12 @@
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
-		<spring.version>4.3.9.RELEASE</spring.version>
+		<spring.version>4.3.21.RELEASE</spring.version>
 		<spring.data.version>1.11.4.RELEASE</spring.data.version>
 		<spring.ws.version>2.4.0.RELEASE</spring.ws.version>
 		<spring.security.version>4.2.3.RELEASE</spring.security.version>
 		<hibernate.version>5.3.1.Final</hibernate.version>
-		<jackson.version>2.8.9</jackson.version>
+		<jackson.version>2.9.8</jackson.version>
 		<tiles.version>3.0.7</tiles.version>
 		<poi.version>3.16</poi.version>
 		<google.maps.version>0.2.2</google.maps.version>
@@ -225,7 +225,7 @@
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.3.1</version>
+			<version>1.3.3</version>
 		</dependency>
 		<!-- Apache HttpClient -->
 		<dependency>
