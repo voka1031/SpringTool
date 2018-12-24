@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.project.model.*"%>
+<%@ page import="com.project.customer.*"%>
 <tr>
 	<th>編號</th>
 	<th>性別</th>

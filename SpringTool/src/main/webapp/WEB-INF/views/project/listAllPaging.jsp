@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.project.model.*"%>
+<%@ page import="com.project.customer.*"%>
 
 <!DOCTYPE html>
 <html>

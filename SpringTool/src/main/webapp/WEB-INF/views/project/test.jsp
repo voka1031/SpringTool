@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.project.model.*"%>
+<%@ page import="com.project.customer.*"%>
 <!DOCTYPE html>
 <html ng-app="myApp">
 <head>
