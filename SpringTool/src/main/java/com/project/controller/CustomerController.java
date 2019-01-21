@@ -47,16 +47,15 @@ public class CustomerController {
 	@RequestMapping(method = RequestMethod.POST, value = "getOneForDisplay")
 	public String getOneForDisplay(@Valid @ModelAttribute IdWrapper idWrapper, BindingResult result, ModelMap model) {
 
-		if (result.hasErrors())
+		if (result.hasErrors()) {
 			model.addAttribute("message", result.getFieldError().getDefaultMessage());
-
-		Customer pVO = getSvc.getOnePractice(new Integer(idWrapper.getId()));
-
-		if (pVO == null)
-			model.addAttribute("message", "查無資料");
-		else
-			model.addAttribute("customer", pVO);
-
+		} else {
+			Customer pVO = getSvc.getOnePractice(new Integer(idWrapper.getId()));
+			if (pVO == null)
+				model.addAttribute("message", "查無資料");
+			else
+				model.addAttribute("customer", pVO);
+		}
 		return PageConsts.MAIN_PAGE;
 	}
 
@@ -133,7 +132,7 @@ public class CustomerController {
 		transSvc.deletePractice(new Integer(id));
 		return listAllPaging(model);
 	}
-	
+
 	@PostMapping(value = "getByGender", produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String getByGender(String gender) {
