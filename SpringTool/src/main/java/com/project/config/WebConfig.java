@@ -9,15 +9,15 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.theme.CookieThemeResolver;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 import com.project.handler.ProjectInterceptor;
 
@@ -27,21 +27,42 @@ import com.project.handler.ProjectInterceptor;
 @ComponentScan(basePackages = "com.project")
 @PropertySource("classpath:apConfig.properties")
 public class WebConfig implements WebMvcConfigurer {
-	
+
 	@Bean(name = "jspProperties")
 	public PropertiesFactoryBean getJspProperties() {
-	    PropertiesFactoryBean bean = new PropertiesFactoryBean();
-	    bean.setLocation(new ClassPathResource("jsp.properties"));
-	    return bean;
+		PropertiesFactoryBean bean = new PropertiesFactoryBean();
+		bean.setLocation(new ClassPathResource("jsp.properties"));
+		return bean;
 	}
 
+//  jsp resolver	
+//	@Bean
+//	public ViewResolver internalViewResolver() {
+//		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//		resolver.setViewClass(JstlView.class);
+//		resolver.setPrefix("/WEB-INF/views/project/");
+//		resolver.setSuffix(".jsp");
+//		return resolver;
+//	}
+
+	/**
+	 * Configure TilesConfigurer.
+	 */
 	@Bean
-	public ViewResolver internalViewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setViewClass(JstlView.class);
-		resolver.setPrefix("/WEB-INF/views/project/");
-		resolver.setSuffix(".jsp");
-		return resolver;
+	public TilesConfigurer tilesConfigurer() {
+		TilesConfigurer tilesConfigurer = new TilesConfigurer();
+		tilesConfigurer.setDefinitions(new String[] { "/WEB-INF/views/tiles.xml" });
+		tilesConfigurer.setCheckRefresh(true);
+		return tilesConfigurer;
+	}
+
+	/**
+	 * Configure ViewResolvers to deliver preferred views.
+	 */
+	@Override
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+		TilesViewResolver viewResolver = new TilesViewResolver();
+		registry.viewResolver(viewResolver);
 	}
 
 	@Bean

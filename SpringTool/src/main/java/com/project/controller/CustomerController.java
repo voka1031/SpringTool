@@ -44,8 +44,8 @@ public class CustomerController {
 		return "getOneAjax";
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "getOneForDisplay")
-	public String getOneForDisplay(@Valid @ModelAttribute IdWrapper idWrapper, BindingResult result, ModelMap model) {
+	@RequestMapping(method = RequestMethod.POST, value = "findOne")
+	public String findOne(@Valid @ModelAttribute IdWrapper idWrapper, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("message", result.getFieldError().getDefaultMessage());
@@ -66,8 +66,8 @@ public class CustomerController {
 		return "pagingTable";
 	}
 
-	@GetMapping("listAllPaging")
-	public String listAllPaging(ModelMap model) {
+	@GetMapping("listAll")
+	public String listAll(ModelMap model) {
 		Integer numberPerPage = Integer.parseInt(env.getProperty("practice.numberPerPage"));
 		Integer nthPage = Integer.parseInt(env.getProperty("practice.defaultStartingPage"));
 		Integer listSize = getSvc.getListSize();
@@ -80,31 +80,31 @@ public class CustomerController {
 		model.addAttribute("list", getSvc.getPaging(nthPage, numberPerPage));
 		model.addAttribute("lackNumber", lackNumber);
 
-		return "listAllPaging";
+		return "listAll";
 	}
 
 	@GetMapping("listAllDataTable")
-	public String listAll_dataTable(ModelMap model) {
+	public String listAllDataTable(ModelMap model) {
 		model.addAttribute("list", getSvc.getDemoList());
 		return "listAllDataTable";
 	}
 
-	@PostMapping("getOneForUpdate")
-	public String getOneForUpdate(@RequestParam("id") String id, ModelMap model) {
-		model.addAttribute("customer", getSvc.getOnePractice(new Integer(id)));
-		return PageConsts.UPDATE_PAGE;
-	}
-
-	@GetMapping("add")
-	public String addPractice(ModelMap model) {
+	@GetMapping("insertPage")
+	public String insertPage(ModelMap model) {
 		model.addAttribute("customer", new Customer());
 		return PageConsts.INSERT_PAGE;
 	}
 
-	@GetMapping("addJQueryValidate")
-	public String addJQueryValidate(ModelMap model) {
+	@GetMapping("insertPageJQueryValidate")
+	public String insertPageJQueryValidate(ModelMap model) {
 		model.addAttribute("customer", new Customer());
-		return "addJQueryValidate";
+		return "insertPageJQueryValidate";
+	}
+
+	@PostMapping("updatePage")
+	public String updatePage(@RequestParam("id") String id, ModelMap model) {
+		model.addAttribute("customer", getSvc.getOnePractice(new Integer(id)));
+		return PageConsts.UPDATE_PAGE;
 	}
 
 	@PostMapping("insert")
@@ -113,8 +113,8 @@ public class CustomerController {
 		if (result.hasErrors())
 			return PageConsts.INSERT_PAGE;
 
-		transSvc.addPractice(customer);
-		return listAllPaging(model);
+		transSvc.addCustomer(customer);
+		return listAll(model);
 	}
 
 	@PostMapping("update")
@@ -123,14 +123,14 @@ public class CustomerController {
 		if (result.hasErrors())
 			return PageConsts.UPDATE_PAGE;
 
-		transSvc.updatePractice(customer);
-		return listAllPaging(model);
+		transSvc.updateCustomer(customer);
+		return listAll(model);
 	}
 
 	@PostMapping("delete")
 	public String delete(@RequestParam("id") String id, ModelMap model) {
-		transSvc.deletePractice(new Integer(id));
-		return listAllPaging(model);
+		transSvc.deleteCustomer(new Integer(id));
+		return listAll(model);
 	}
 
 	@PostMapping(value = "getByGender", produces = "application/json;charset=UTF-8")

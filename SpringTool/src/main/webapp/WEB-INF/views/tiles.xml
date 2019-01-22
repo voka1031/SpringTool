@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<!-- Base Definition -->
+	<definition name="base-definition" template="/WEB-INF/views/common/layout-default.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="css" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/common/navbar.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
+
+	<!-- AngularJs Definition -->
+	<definition name="angularjs-definition" template="/WEB-INF/views/common/layout-angularjs.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="css" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/common/navbar.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
+
+	<!-- Home Page -->
+	<definition name="index" extends="base-definition">
+		<put-attribute name="title" value="Main" />
+		<put-attribute name="body" value="/WEB-INF/views/project/index.jsp" />
+	</definition>
+
+	<!-- List All with Custom Pagination -->
+	<definition name="listAll" extends="base-definition">
+		<put-attribute name="title" value="List All" />
+		<put-attribute name="css" value="/WEB-INF/views/makeup/listAllCss.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/project/listAllPaging.jsp" />
+	</definition>
+
+	<!-- pagingTable -->
+	<definition name="pagingTable" template="/WEB-INF/views/project/pagingTable.jsp">
+	</definition>
+
+	<!-- get Member - Ajax -->
+	<definition name="getOneAjax" template="/WEB-INF/views/project/getOneAjax.jsp">
+	</definition>
+
+	<!-- List All with DataTable library -->
+	<definition name="listAllDataTable" extends="base-definition">
+		<put-attribute name="title" value="DataTable" />
+		<put-attribute name="css" value="/WEB-INF/views/makeup/listAllDataTableCss.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/project/listAllDataTable.jsp" />
+	</definition>
+
+	<!-- Insert Page -->
+	<definition name="insertPage" extends="base-definition">
+		<put-attribute name="title" value="Insert" />
+		<put-attribute name="body" value="/WEB-INF/views/project/insert.jsp" />
+	</definition>
+
+	<!-- Insert Page - JQuery Validate -->
+	<definition name="insertPageJQueryValidate" extends="base-definition">
+		<put-attribute name="title" value="Insert" />
+		<put-attribute name="body" value="/WEB-INF/views/project/insertJQueryValidate.jsp" />
+	</definition>
+
+	<!-- Update Page -->
+	<definition name="updatePage" extends="base-definition">
+		<put-attribute name="title" value="Update" />
+		<put-attribute name="body" value="/WEB-INF/views/project/update.jsp" />
+	</definition>
+
+	<!-- Test Page -->
+	<definition name="test" extends="angularjs-definition">
+		<put-attribute name="title" value="Test" />
+		<put-attribute name="body" value="/WEB-INF/views/project/test.jsp" />
+	</definition>
+
+	<!-- File Upload Page -->
+	<definition name="fileUpload" extends="base-definition">
+		<put-attribute name="title" value="File Upload" />
+		<put-attribute name="body" value="/WEB-INF/views/project/fileUpload.jsp" />
+	</definition>
+
+	<!-- Error Page -->
+	<definition name="errorPage" extends="base-definition">
+		<put-attribute name="title" value="ERROR" />
+		<put-attribute name="body" value="/WEB-INF/views/common/error.jsp" />
+	</definition>
+
+</tiles-definitions>

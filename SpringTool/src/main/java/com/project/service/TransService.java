@@ -16,17 +16,17 @@ public class TransService {
 	private CustomerInterface dao;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void addPractice(Customer practiceVO) {
-		dao.insert(practiceVO);
+	public void addCustomer(Customer customer) {
+		dao.insert(customer);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void updatePractice(Customer practiceVO) {
-		dao.update(practiceVO);
+	public void updateCustomer(Customer customer) {
+		dao.update(customer);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void deletePractice(Integer id) {
+	public void deleteCustomer(Integer id) {
 		dao.delete(id);
 	}
 }
