@@ -15,7 +15,7 @@
 		<td>${customer.name}</td>
 		<td>${customer.tel}</td>
 		<td>
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/getOneForUpdate">
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer/updatePage">
 				<input type="submit" value="修改" class="btn btn-primary btn-xs">
 				<input type="hidden" name="id" value="${customer.id}">
 			</FORM>

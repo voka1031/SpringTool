@@ -38,10 +38,10 @@ public class CustomerController {
 	@Autowired
 	private Environment env;
 
-	@RequestMapping(method = RequestMethod.POST, value = "getOneForDisplayAJAX")
-	public String getOneForDisplayAJAX(@RequestParam String id, ModelMap model) {
+	@RequestMapping(method = RequestMethod.POST, value = "findOneAjax")
+	public String findOneAjax(@RequestParam String id, ModelMap model) {
 		model.addAttribute("customer", getSvc.getOnePractice(new Integer(id)));
-		return "getOneAjax";
+		return "findOneAjax";
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "findOne")

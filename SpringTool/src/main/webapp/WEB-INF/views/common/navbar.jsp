@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.project.model.*"%>
 <%@ page import="com.project.constant.Constants"%>
 
@@ -30,7 +30,7 @@
 		<a href='<%=request.getContextPath()%>/uploadPage'>上傳測試頁</a>
 	</li>
 	<li>
-		<a href='<%=request.getContextPath()%>/finance/stock'>STOCK</a>
+		<a href='<%=request.getContextPath()%>/finance/stock/0050/default/default'>STOCK</a>
 	</li>
 	<li>
 		<a href='#' id="outsideSubmit">表單外確認鍵</a>

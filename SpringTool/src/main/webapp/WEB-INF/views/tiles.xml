@@ -19,7 +19,7 @@
 		<put-attribute name="body" value="" />
 	</definition>
 
-	<!-- Home Page -->
+	<!-- Main Page -->
 	<definition name="index" extends="base-definition">
 		<put-attribute name="title" value="Main" />
 		<put-attribute name="body" value="/WEB-INF/views/project/index.jsp" />
@@ -27,7 +27,7 @@
 
 	<!-- List All with Custom Pagination -->
 	<definition name="listAll" extends="base-definition">
-		<put-attribute name="title" value="List All" />
+		<put-attribute name="title" value="List" />
 		<put-attribute name="css" value="/WEB-INF/views/makeup/listAllCss.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/project/listAllPaging.jsp" />
 	</definition>
@@ -36,13 +36,13 @@
 	<definition name="pagingTable" template="/WEB-INF/views/project/pagingTable.jsp">
 	</definition>
 
-	<!-- get Member - Ajax -->
-	<definition name="getOneAjax" template="/WEB-INF/views/project/getOneAjax.jsp">
+	<!-- Find One - Ajax -->
+	<definition name="findOneAjax" template="/WEB-INF/views/project/findOneAjax.jsp">
 	</definition>
 
 	<!-- List All with DataTable library -->
 	<definition name="listAllDataTable" extends="base-definition">
-		<put-attribute name="title" value="DataTable" />
+		<put-attribute name="title" value="List" />
 		<put-attribute name="css" value="/WEB-INF/views/makeup/listAllDataTableCss.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/project/listAllDataTable.jsp" />
 	</definition>
@@ -77,9 +77,16 @@
 		<put-attribute name="body" value="/WEB-INF/views/project/fileUpload.jsp" />
 	</definition>
 
+	<!-- Stock Page -->
+	<definition name="stock" extends="base-definition">
+		<put-attribute name="title" value="Stock" />
+		<put-attribute name="css" value="/WEB-INF/views/makeup/stockCss.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/project/stock.jsp" />
+	</definition>
+
 	<!-- Error Page -->
 	<definition name="errorPage" extends="base-definition">
-		<put-attribute name="title" value="ERROR" />
+		<put-attribute name="title" value="Error" />
 		<put-attribute name="body" value="/WEB-INF/views/common/error.jsp" />
 	</definition>
 

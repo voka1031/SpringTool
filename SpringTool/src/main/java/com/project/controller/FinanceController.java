@@ -5,6 +5,7 @@ import java.text.ParseException;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.project.model.stock.StockInfo;
 import com.project.model.stock.StockRequest;
 import com.project.service.GetService;
+import com.project.util.MyDateUtils;
 
 @Controller
 @RequestMapping("finance")
@@ -31,6 +33,13 @@ public class FinanceController {
 			throws IOException, ParseException {
 		StockInfo info = getSvc.getStockInfo(stockId);
 		System.out.println("StockInfo :" + info);
+		
+		if(StringUtils.equals("default", startDate)) {
+			System.out.println("default setting actived");
+			startDate = MyDateUtils.getDefaultDateString(true);
+			endDate = MyDateUtils.getDefaultDateString(false);
+		}
+		
 		model.addAttribute("stockName", info == null ? "Stock" : info.getStockName());
 		model.addAttribute("securityCode", info == null ? "" : info.getSecurityCode());
 		model.addAttribute("dataPointsList", getSvc.getStock(stockId, startDate, endDate));

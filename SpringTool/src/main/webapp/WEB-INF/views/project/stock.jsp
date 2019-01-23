@@ -1,25 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ page import="java.util.*"%>
-<%@ page import="com.project.customer.*"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<!DOCTYPE HTML>
-<html>
-<head>
-<link rel="stylesheet" href="<c:out value="${pageContext.request.contextPath}"/>/css/jquery-ui.css">
-<meta charset="UTF-8">
-</head>
-<body>
-	<form METHOD="get" ACTION="<%=request.getContextPath()%>/finance/getStock">
-		<b>Stock-Trend Query</b>
-		StockID:<input type="text" id="securityCode" name="securityCode">
-		StartDay:<input type="text" id="startDate" name="startDate">
-		EndDay:<input type="text" id="endDate" name="endDate">
-		<input type="submit" value="Submit" class="btn btn-info btn-sm">
-	</form>
-	<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
-</body>
+<form METHOD="get" ACTION="<%=request.getContextPath()%>/finance/getStock">
+	<b>Stock-Trend Query</b> StockID:
+	<input type="text" id="securityCode" name="securityCode">
+	StartDay:
+	<input type="text" id="startDate" name="startDate">
+	EndDay:
+	<input type="text" id="endDate" name="endDate">
+	<input type="submit" value="Submit" class="btn btn-info btn-sm">
+</form>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+
 <script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>
 <script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-ui.js"></script>
 <script src="<c:out value="${pageContext.request.contextPath}"/>/js/canvasjs.min.js"></script>
@@ -35,8 +28,8 @@
 			changeYear : true,
 			dateFormat : 'yymmdd'
 		});
-		$('#startDate').datepicker('setDate', '-6M');
-		$('#endDate').datepicker('setDate', '-0d');
+		$('#startDate').datepicker('setDate', '-1M');
+		$('#endDate').datepicker('setDate', '-1d');
 	});
 </script>
 <script>
@@ -171,4 +164,3 @@
 
 	}
 </script>
-</html>

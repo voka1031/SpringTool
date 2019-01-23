@@ -2,41 +2,52 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-	<b>單一查詢 - 輸入編號 (如1041):</b>
-	<form METHOD="post" ACTION="<%=request.getContextPath()%>/customer/findOne" id="queryForm">
-		<input type="text" id="id" name="id" class="check_group">
-		<input type="submit" value="查詢" class="btn btn-info btn-sm">
-	</form>
-
-	<br />
-	<div class="fullScreenBlockDiv">
-		<div class="col-xs-6 col-sm-2">
-			<select id="genderSelect" class="form-control">
-				<option value="0">----</option>
-				<option value="1">全部</option>
-				<c:forEach var="key" items="${genderMapKey}">
-					<option value="${key}">${genderMap[key]}</option>
-				</c:forEach>
-			</select>
+	<div class="row">
+		<div class="col-xs-6 col-sm-6">
+			<form METHOD="post" ACTION="<%=request.getContextPath()%>/customer/findOne" id="queryForm">
+				<div class="form-group">
+					<div class="alert alert-info">
+						<label for="id">單一查詢</label>
+					</div>
+					<div class="col-xs-10 col-sm-10">
+						<input type="text" id="id" name="id" class="form-control">
+					</div>
+					<div class="col-xs-2 col-sm-2">
+						<button type="submit" class="btn btn-primary">查詢</button>
+					</div>
+				</div>
+			</form>
 		</div>
-		<div class="col-xs-6 col-sm-2">
-			<select id="nameSelect" class="form-control">
-				<option value="0">----</option>
-			</select>
+		<div class="col-xs-6 col-sm-6">
+			<div class="alert alert-info">
+				<label for="id">下拉選單查詢</label>
+			</div>
+			<div class="fullScreenBlockDiv">
+				<div class="col-xs-6 col-sm-6">
+					<select id="genderSelect" class="form-control">
+						<option value="0">----</option>
+						<option value="1">全部</option>
+						<c:forEach var="key" items="${genderMapKey}">
+							<option value="${key}">${genderMap[key]}</option>
+						</c:forEach>
+					</select>
+				</div>
+				<div class="col-xs-6 col-sm-6">
+					<select id="nameSelect" class="form-control" disabled>
+						<option value="0">----</option>
+					</select>
+				</div>
+			</div>
 		</div>
 	</div>
-
-	<br />
-
 	<%--Location for showing error messages --%>
 	<c:if test="${not empty message}">
-		<br>
-		<div class="errorblock">${message}</div>
+		<br />
+		<div class="errorblock alert alert-danger">${message}</div>
 	</c:if>
-
-	<br>
+	<br />
 	<div class="fullScreenBlockDiv">
-		<div class="col-xs-12 col-sm-8" id="anchorDiv">
+		<div class="col-xs-12 col-sm-12" id="anchorDiv">
 			<c:if test="${not empty customer}">
 				<table class="table">
 					<tr>
@@ -69,7 +80,6 @@
 			</c:if>
 		</div>
 	</div>
-
 </div>
 <script src="<c:out value="${pageContext.request.contextPath}"/>/js/jquery-1.12.4.min.js"></script>
 <script src="<c:out value="${pageContext.request.contextPath}"/>/js/bootstrap-3.3.7.js"></script>
@@ -93,13 +103,17 @@
 						var option = $('<option></option>').attr("value", genderObj.id).text(genderObj.name);
 						$nameSelect.append(option);
 					});
+					$nameSelect.prop('disabled', false);
+					${message} = '';
+					console.log(${message});
+					console.log(${not empty message});
 				});
 			}
 		});
 		$nameSelect.change(function() {
 			if ($nameSelect.val() != 0) {
 				$.ajax({
-					url : contextPath + '/customer/getOneForDisplayAJAX',
+					url : contextPath + '/customer/findOneAjax',
 					type : 'POST',
 					data : {
 						id : $nameSelect.val()
@@ -107,7 +121,6 @@
 					cache : false,
 					success : function(result, status, xhr) {
 						$anchorDiv.html(result);
-						console.log("ajax success");
 					},
 					error : function(xhr, status, error) {
 						console.log("ajax err");
